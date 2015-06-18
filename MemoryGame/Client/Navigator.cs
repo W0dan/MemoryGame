@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using MemoryGame.Client.Extensions;
+using MemoryGame.Client.Views;
+
+namespace MemoryGame.Client
+{
+    public class Navigator : INavigator
+    {
+        private static UIElement _activeControl;
+        private static Grid _layoutGrid;
+        private static NavigationControl _navigationControl;
+
+        private static readonly Stack<Func<UIElement>> NavigationHistory = new Stack<Func<UIElement>>();
+
+        public void Initialize(Grid layoutGrid, NavigationControl navigationControl)
+        {
+            _layoutGrid = layoutGrid;
+            _navigationControl = navigationControl;
+        }
+
+        public void NavigateTo(Func<UIElement> action)
+        {
+            NavigationHistory.Push(action);
+
+            ActivateAction(action);
+        }
+
+        public void NavigationCompleted(string title)
+        {
+            _navigationControl.SetTitle(title);
+        }
+
+        public void NavigateFromHistory()
+        {
+            if (NavigationHistory.Count == 1) return;
+
+            NavigationHistory.Pop();
+            var action = NavigationHistory.Peek();
+
+            ActivateAction(action);
+        }
+
+        private static void ActivateAction(Func<UIElement> action)
+        {
+            if (_activeControl != null)
+                _layoutGrid.Children.Remove(_activeControl);
+
+            _activeControl = action();
+            _layoutGrid.CreateContentControl(_activeControl, 1, 1);
+        }
+    }
+}
