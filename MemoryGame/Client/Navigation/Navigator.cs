@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using MemoryGame.Client.Extensions;
-using MemoryGame.Client.Views;
 
-namespace MemoryGame.Client
+namespace MemoryGame.Client.Navigation
 {
     public class Navigator : INavigator
     {
         private static UIElement _activeControl;
         private static Grid _layoutGrid;
-        private static NavigationControl _navigationControl;
 
         private static readonly Stack<Func<UIElement>> NavigationHistory = new Stack<Func<UIElement>>();
 
-        public void Initialize(Grid layoutGrid, NavigationControl navigationControl)
+        public void Initialize(Grid layoutGrid)
         {
             _layoutGrid = layoutGrid;
-            _navigationControl = navigationControl;
         }
 
         public void NavigateTo(Func<UIElement> action)
@@ -26,11 +23,6 @@ namespace MemoryGame.Client
             NavigationHistory.Push(action);
 
             ActivateAction(action);
-        }
-
-        public void NavigationCompleted(string title)
-        {
-            _navigationControl.SetTitle(title);
         }
 
         public void NavigateFromHistory()

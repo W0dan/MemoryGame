@@ -1,30 +1,32 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using MemoryGame.Client.Extensions;
 
-namespace MemoryGame
+namespace MemoryGame.Client.Views
 {
-    /// <summary>
-    /// Interaction logic for Main.xaml
-    /// </summary>
-    public partial class Main : Window
+    public partial class MainmenuControl : UserControl
     {
-        public Main()
+        public event Action ExitButtonClicked;
+
+        public MainmenuControl()
         {
             InitializeComponent();
         }
 
         private void SingleplayerButtonClick(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void MultiplayerButtonClick(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
         {
-            
+            ExitButtonClicked.Raise();
         }
     }
 }

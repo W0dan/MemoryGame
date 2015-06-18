@@ -54,11 +54,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client\Controllers\IMasterController.cs" />
+    <Compile Include="Client\Controllers\IMenuController.cs" />
+    <Compile Include="Client\Controllers\MasterController.cs" />
+    <Compile Include="Client\Controllers\MenuController.cs" />
     <Compile Include="Client\Extensions\GridExtensions.cs" />
-    <Compile Include="Client\INavigator.cs" />
+    <Compile Include="Client\Navigation\INavigator.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Extensions\ActionExtensions.cs" />
-    <Compile Include="Client\Navigator.cs" />
+    <Compile Include="Client\Navigation\Navigator.cs" />
+    <Compile Include="Client\Views\MainmenuControl.xaml.cs">
+      <DependentUpon>MainmenuControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Views\MasterLayoutControl.xaml.cs">
+      <DependentUpon>MasterLayoutControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Client\Views\NavigationControl.xaml.cs">
       <DependentUpon>NavigationControl.xaml</DependentUpon>
     </Compile>
@@ -66,11 +76,19 @@
     <Compile Include="Server\MultiplayerService.cs" />
     <Compile Include="Server\Subscriber.cs" />
     <Compile Include="Server\SubscriberCollection.cs" />
+    <Page Include="Client\Views\MainmenuControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Views\MasterLayoutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Client\Views\NavigationControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Client\Views\Main.xaml">
+    <Page Include="Client\Main.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -83,7 +101,7 @@
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\Shell.cs" />
     <Compile Include="Hosting\Host.cs" />
-    <Compile Include="Client\Views\Main.xaml.cs">
+    <Compile Include="Client\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

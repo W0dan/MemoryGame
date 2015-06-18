@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="MemoryGame.Client.Views.MainmenuControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="444" Background="LemonChiffon">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="20px"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="10,10,10,10"  FontSize="20" FontWeight="Bold" Grid.ColumnSpan="3">Main Menu</TextBlock>
+        <Button Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="1" Content="Singleplayer" Name="SingleplayerButton" Click="SingleplayerButtonClick" FontSize="20" FontWeight="Bold"></Button>
+        <Button Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="2" Content="Multiplayer" Name="MultiplayerButton" Click="MultiplayerButtonClick" FontSize="20" FontWeight="Bold"></Button>
+        <Button Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="4" Content="Exit" Name="ExitButton" Click="ExitButtonClick" FontSize="20" FontWeight="Bold"></Button>
+    </Grid>
+</UserControl>
