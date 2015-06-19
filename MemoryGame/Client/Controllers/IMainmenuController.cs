@@ -2,7 +2,7 @@
 
 namespace MemoryGame.Client.Controllers
 {
-    public interface IMenuController
+    public interface IMainmenuController
     {
         UIElement Index();
     }

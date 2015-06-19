@@ -55,9 +55,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Client\Controllers\IMasterController.cs" />
-    <Compile Include="Client\Controllers\IMenuController.cs" />
+    <Compile Include="Client\Controllers\IMainmenuController.cs" />
+    <Compile Include="Client\Controllers\IMultiplayermenuController.cs" />
     <Compile Include="Client\Controllers\MasterController.cs" />
-    <Compile Include="Client\Controllers\MenuController.cs" />
+    <Compile Include="Client\Controllers\MainmenuController.cs" />
+    <Compile Include="Client\Controllers\MultiplayermenuController.cs" />
     <Compile Include="Client\Extensions\GridExtensions.cs" />
     <Compile Include="Client\Navigation\INavigator.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
@@ -68,6 +70,9 @@
     </Compile>
     <Compile Include="Client\Views\MasterLayoutControl.xaml.cs">
       <DependentUpon>MasterLayoutControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Views\MultiplayermenuControl.xaml.cs">
+      <DependentUpon>MultiplayermenuControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Client\Views\NavigationControl.xaml.cs">
       <DependentUpon>NavigationControl.xaml</DependentUpon>
@@ -81,6 +86,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Client\Views\MasterLayoutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Views\MultiplayermenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

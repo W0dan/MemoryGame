@@ -8,6 +8,8 @@ namespace MemoryGame.Client.Views
     public partial class MainmenuControl : UserControl
     {
         public event Action ExitButtonClicked;
+        public event Action SingleplayerSelected;
+        public event Action MultiplayerSelected;
 
         public MainmenuControl()
         {
@@ -16,12 +18,12 @@ namespace MemoryGame.Client.Views
 
         private void SingleplayerButtonClick(object sender, RoutedEventArgs e)
         {
-            
+            SingleplayerSelected.Raise();
         }
 
         private void MultiplayerButtonClick(object sender, RoutedEventArgs e)
         {
-            
+            MultiplayerSelected.Raise();
         }
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)

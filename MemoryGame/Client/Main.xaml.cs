@@ -17,7 +17,9 @@ namespace MemoryGame.Client
         private void CreateMasterLayout()
         {
             //some bootstrapping going on here:
-            var masterController = new MasterController(new Navigator(), new MenuController());
+            var navigator = new Navigator();
+            var mainmenuController = new MainmenuController(navigator, new MultiplayermenuController(navigator));
+            var masterController = new MasterController(navigator, mainmenuController);
 
             var masterLayout = masterController.Index();
 

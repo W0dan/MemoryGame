@@ -7,9 +7,9 @@ namespace MemoryGame.Client.Controllers
     public class MasterController : IMasterController
     {
         private readonly INavigator _navigator;
-        private readonly IMenuController _menuController;
+        private readonly IMainmenuController _menuController;
 
-        public MasterController(INavigator navigator, IMenuController menuController)
+        public MasterController(INavigator navigator, IMainmenuController menuController)
         {
             _navigator = navigator;
             _menuController = menuController;
