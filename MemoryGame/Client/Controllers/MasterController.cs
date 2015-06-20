@@ -21,7 +21,7 @@ namespace MemoryGame.Client.Controllers
 
             _navigator.Initialize(masterLayoutControl.LayoutGrid);
 
-            _navigator.NavigateTo(() => _menuController.Index());
+            _navigator.NavigateTo(_menuController.Index);
 
             return masterLayoutControl;
         }

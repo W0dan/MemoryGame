@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client\Controllers\HostmenuController.cs" />
+    <Compile Include="Client\Controllers\IHostmenuController.cs" />
     <Compile Include="Client\Controllers\IMasterController.cs" />
     <Compile Include="Client\Controllers\IMainmenuController.cs" />
     <Compile Include="Client\Controllers\IMultiplayermenuController.cs" />
@@ -65,6 +67,9 @@
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Extensions\ActionExtensions.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
+    <Compile Include="Client\Views\HostmenuControl.xaml.cs">
+      <DependentUpon>HostmenuControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Client\Views\MainmenuControl.xaml.cs">
       <DependentUpon>MainmenuControl.xaml</DependentUpon>
     </Compile>
@@ -77,10 +82,15 @@
     <Compile Include="Client\Views\NavigationControl.xaml.cs">
       <DependentUpon>NavigationControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Hosting\IHost.cs" />
     <Compile Include="Proxy\MultiplayerProxy.cs" />
     <Compile Include="Server\MultiplayerService.cs" />
     <Compile Include="Server\Subscriber.cs" />
     <Compile Include="Server\SubscriberCollection.cs" />
+    <Page Include="Client\Views\HostmenuControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Client\Views\MainmenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

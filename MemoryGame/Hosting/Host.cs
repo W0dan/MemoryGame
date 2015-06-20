@@ -5,7 +5,7 @@ using MemoryGame.Server;
 
 namespace MemoryGame.Hosting
 {
-    public class Host
+    public class Host : IHost
     {
         private ServiceHost _serviceHost;
 

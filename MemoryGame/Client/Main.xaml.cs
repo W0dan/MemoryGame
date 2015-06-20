@@ -18,7 +18,10 @@ namespace MemoryGame.Client
         {
             //some bootstrapping going on here:
             var navigator = new Navigator();
-            var mainmenuController = new MainmenuController(navigator, new MultiplayermenuController(navigator));
+
+            var hostmenuController = new HostmenuController();
+            var multiplayermenuController = new MultiplayermenuController(navigator, hostmenuController);
+            var mainmenuController = new MainmenuController(navigator, multiplayermenuController);
             var masterController = new MasterController(navigator, mainmenuController);
 
             var masterLayout = masterController.Index();

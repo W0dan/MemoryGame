@@ -27,7 +27,7 @@ namespace MemoryGame.Client.Controllers
 
         private void MultiplayerSelected()
         {
-            _navigator.NavigateTo(() => _multiplayermenuController.Index());
+            _navigator.NavigateTo(_multiplayermenuController.Index);
         }
 
         private static void ExitButtonClicked()
