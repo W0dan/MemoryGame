@@ -25,7 +25,7 @@ namespace MemoryGame.Client.Controllers
             _view.PlayersStackpanel.Children.Clear();
             foreach (var p in playerList)
             {
-                _view.PlayersStackpanel.Children.Add(new Label {Content = p});
+                _view.PlayersStackpanel.Children.Add(new Label { Content = p });
             }
         }
 
@@ -34,9 +34,16 @@ namespace MemoryGame.Client.Controllers
             _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
         }
 
-        public UIElement Index()
+        public UIElement Index(bool isHost)
         {
             _view = new LobbyControl();
+
+            if (isHost)
+            {
+                _view.StartButton.Visibility = Visibility.Visible;
+                _view.CancelButton.Content = "Cancel";
+                _view.NumberOfCardsSlider.Visibility = Visibility.Visible;
+            }
 
             _view.TextEnteredInChatbox += TextEnteredInChatbox;
 

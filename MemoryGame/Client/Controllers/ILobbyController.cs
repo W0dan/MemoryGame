@@ -4,6 +4,6 @@ namespace MemoryGame.Client.Controllers
 {
     public interface ILobbyController
     {
-        UIElement Index();
+        UIElement Index(bool isHost);
     }
 }

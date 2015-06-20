@@ -54,7 +54,7 @@ namespace MemoryGame.Client.Controllers
 
             _playerContext.Join(_ipAddressProvider.GetLocalIPAddress().ToString(), port, playerName);
 
-            _navigator.NavigateTo(_lobbyController.Index);
+            _navigator.NavigateTo(() => _lobbyController.Index(true));
         }
 
         private void BackButtonClicked()

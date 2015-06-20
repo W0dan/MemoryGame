@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MemoryGame.Extensions;
 
 namespace MemoryGame.Client.Views
 {
-     public partial class LobbyControl : UserControl
+    public partial class LobbyControl : UserControl
     {
         public event Action<string> TextEnteredInChatbox;
+        public event Action CancelButtonClicked;
 
         public LobbyControl()
         {
@@ -20,6 +22,11 @@ namespace MemoryGame.Client.Views
             {
                 TextEnteredInChatbox.Raise(ChatTextbox.Text);
             }
+        }
+
+        private void CancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            CancelButtonClicked.Raise();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace MemoryGame.Client.Controllers
         {
             _playerContext.Join(ipAddress, port, playerName);
 
-            _navigator.NavigateTo(_lobbyController.Index);
+            _navigator.NavigateTo(() => _lobbyController.Index(false));
         }
 
         private void BackButtonClicked()
