@@ -144,7 +144,6 @@
     </Compile>
     <Compile Include="Contracts\IMultiplayerService.cs" />
     <Compile Include="Contracts\IPlayerCallback.cs" />
-    <Compile Include="Extensions\Shell.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Client\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
