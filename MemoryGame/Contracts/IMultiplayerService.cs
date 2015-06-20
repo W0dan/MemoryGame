@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 
 namespace MemoryGame.Contracts
 {
@@ -10,5 +11,8 @@ namespace MemoryGame.Contracts
 
         [OperationContract(IsOneWay = true)]
         void SendChatMessage(string playertoken, string message);
+
+        [OperationContract]
+        List<string> GetPlayerList(string playertoken);
     }
 }

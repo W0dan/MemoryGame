@@ -5,14 +5,11 @@ using MemoryGame.Extensions;
 
 namespace MemoryGame.Client.Views
 {
-    /// <summary>
-    /// Interaction logic for CreateMultiplayerGameControl.xaml
-    /// </summary>
-    public partial class CreateMultiplayerGameControl : UserControl
+     public partial class LobbyControl : UserControl
     {
         public event Action<string> TextEnteredInChatbox;
 
-        public CreateMultiplayerGameControl()
+        public LobbyControl()
         {
             InitializeComponent();
         }

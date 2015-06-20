@@ -1,19 +1,32 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
 
 namespace MemoryGame.Client.Controllers
 {
-    public class CreateMultiplayerGameController : ICreateMultiplayerGameController
+    public class LobbyController : ILobbyController
     {
         private readonly IPlayerContext _playerContext;
-        private CreateMultiplayerGameControl _view;
+        private LobbyControl _view;
 
-        public CreateMultiplayerGameController(IPlayerContext playerContext)
+        public LobbyController(IPlayerContext playerContext)
         {
             _playerContext = playerContext;
 
             _playerContext.ChatMessageReceived += AppendToChatbox;
+            _playerContext.PlayerJoined += RefreshPlayerList;
+        }
+
+        private void RefreshPlayerList(string player)
+        {
+            var playerList = _playerContext.GetPlayerList();
+
+            _view.PlayersStackpanel.Children.Clear();
+            foreach (var p in playerList)
+            {
+                _view.PlayersStackpanel.Children.Add(new Label {Content = p});
+            }
         }
 
         private void AppendToChatbox(string player, string message)
@@ -23,9 +36,11 @@ namespace MemoryGame.Client.Controllers
 
         public UIElement Index()
         {
-            _view = new CreateMultiplayerGameControl();
+            _view = new LobbyControl();
 
             _view.TextEnteredInChatbox += TextEnteredInChatbox;
+
+            RefreshPlayerList(_playerContext.PlayerName);
 
             return _view;
         }

@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 using MemoryGame.Contracts;
 
 namespace MemoryGame.Server
@@ -17,6 +18,7 @@ namespace MemoryGame.Server
                 return null;
             }
 
+            _players.Send(joinedPlayer.Token, (player, callback) => callback.OnPlayerJoined(player));
             _players.Send(joinedPlayer.Token, (player, callback) => callback.OnChatMessageReceived(player, string.Format("{0} has joined", joinedPlayer.Name)));
 
             return joinedPlayer.Token;
@@ -25,6 +27,11 @@ namespace MemoryGame.Server
         public void SendChatMessage(string playertoken, string message)
         {
             _players.Send(playertoken, (player, callback) => callback.OnChatMessageReceived(player, message));
+        }
+
+        public List<string> GetPlayerList(string playertoken)
+        {
+            return _players.GetPlayerNames();
         }
     }
 }

@@ -57,9 +57,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Client\Controllers\CreateMultiplayerGameController.cs" />
+    <Compile Include="Client\Controllers\IJoinController.cs" />
+    <Compile Include="Client\Controllers\JoinController.cs" />
+    <Compile Include="Client\Controllers\LobbyController.cs" />
     <Compile Include="Client\Controllers\HostmenuController.cs" />
-    <Compile Include="Client\Controllers\ICreateMultiplayerGameController.cs" />
+    <Compile Include="Client\Controllers\ILobbyController.cs" />
     <Compile Include="Client\Controllers\IHostmenuController.cs" />
     <Compile Include="Client\Controllers\IMasterController.cs" />
     <Compile Include="Client\Controllers\IMainmenuController.cs" />
@@ -78,8 +80,11 @@
     <Compile Include="Client\Service\IMultiplayerProxy.cs" />
     <Compile Include="Client\Service\IPlayerContext.cs" />
     <Compile Include="Client\Service\PlayerContext.cs" />
-    <Compile Include="Client\Views\CreateMultiplayerGameControl.xaml.cs">
-      <DependentUpon>CreateMultiplayerGameControl.xaml</DependentUpon>
+    <Compile Include="Client\Views\JoinControl.xaml.cs">
+      <DependentUpon>JoinControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Views\LobbyControl.xaml.cs">
+      <DependentUpon>LobbyControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Client\Views\HostmenuControl.xaml.cs">
       <DependentUpon>HostmenuControl.xaml</DependentUpon>
@@ -101,7 +106,11 @@
     <Compile Include="Server\MultiplayerService.cs" />
     <Compile Include="Server\Subscriber.cs" />
     <Compile Include="Server\SubscriberCollection.cs" />
-    <Page Include="Client\Views\CreateMultiplayerGameControl.xaml">
+    <Page Include="Client\Views\JoinControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Views\LobbyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

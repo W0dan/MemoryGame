@@ -47,7 +47,7 @@ namespace MemoryGame.Server
                     {
                         action(subscriberFrom.Name, subscriber.Callback);
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         subscribersToRemove.Add(subscriber);
                     }
@@ -58,6 +58,11 @@ namespace MemoryGame.Server
                     _subscribers.Remove(subscriber);
                 }
             });
+        }
+
+        public List<string> GetPlayerNames()
+        {
+            return _subscribers.Select(subscriber => subscriber.Name).ToList();
         }
     }
 }

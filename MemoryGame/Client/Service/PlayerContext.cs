@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MemoryGame.Client.Service
 {
     public class PlayerContext : IPlayerContext
     {
+        public event Action<string> PlayerJoined;
         public event Action<string, string> ChatMessageReceived;
 
         private MultiplayerProxy _service;
         private string _playerToken;
+
+        public string PlayerName { get; private set; }
 
         public void Join(string host, string port, string playerName)
         {
@@ -16,6 +20,7 @@ namespace MemoryGame.Client.Service
             _service = new MultiplayerProxy(host, port);
 
             _service.ChatMessageReceived += ChatMessageReceived;
+            _service.PlayerJoined += PlayerJoined;
 
             //todo: display error when join fails with exception
             //todo: display error when join returns null token (meaning playerName allready exists on the server)
@@ -27,6 +32,9 @@ namespace MemoryGame.Client.Service
             _service.SendChatMessage(_playerToken, text);
         }
 
-        public string PlayerName { get; private set; }
+        public List<string> GetPlayerList()
+        {
+            return _service.GetPlayerList(_playerToken);
+        }
     }
 }

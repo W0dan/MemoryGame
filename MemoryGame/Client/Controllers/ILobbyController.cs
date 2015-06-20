@@ -2,7 +2,7 @@
 
 namespace MemoryGame.Client.Controllers
 {
-    public interface ICreateMultiplayerGameController
+    public interface ILobbyController
     {
         UIElement Index();
     }

@@ -25,9 +25,10 @@ namespace MemoryGame.Client
             var host = new Host();
             var ipAddressProvider = new IPAddressProvider();
             var playerContext = new PlayerContext();
-            var createMultiplayerGameController = new CreateMultiplayerGameController(playerContext);
-            var hostmenuController = new HostmenuController(navigator, host, ipAddressProvider, createMultiplayerGameController, playerContext);
-            var multiplayermenuController = new MultiplayermenuController(navigator, hostmenuController);
+            var lobbyController = new LobbyController(playerContext);
+            var hostmenuController = new HostmenuController(navigator, host, ipAddressProvider, lobbyController, playerContext);
+            var joinController = new JoinController(navigator, playerContext, lobbyController);
+            var multiplayermenuController = new MultiplayermenuController(navigator, hostmenuController, joinController);
             var mainmenuController = new MainmenuController(navigator, multiplayermenuController);
             var masterController = new MasterController(navigator, mainmenuController);
 

@@ -13,15 +13,15 @@ namespace MemoryGame.Client.Controllers
         private readonly INavigator _navigator;
         private readonly IHost _host;
         private readonly IIPAddressProvider _ipAddressProvider;
-        private readonly ICreateMultiplayerGameController _createMultiplayerGameController;
+        private readonly ILobbyController _lobbyController;
         private readonly IPlayerContext _playerContext;
 
-        public HostmenuController(INavigator navigator, IHost host, IIPAddressProvider ipAddressProvider, ICreateMultiplayerGameController createMultiplayerGameController, IPlayerContext playerContext)
+        public HostmenuController(INavigator navigator, IHost host, IIPAddressProvider ipAddressProvider, ILobbyController lobbyController, IPlayerContext playerContext)
         {
             _navigator = navigator;
             _host = host;
             _ipAddressProvider = ipAddressProvider;
-            _createMultiplayerGameController = createMultiplayerGameController;
+            _lobbyController = lobbyController;
             _playerContext = playerContext;
         }
 
@@ -54,7 +54,7 @@ namespace MemoryGame.Client.Controllers
 
             _playerContext.Join(_ipAddressProvider.GetLocalIPAddress().ToString(), port, playerName);
 
-            _navigator.NavigateTo(_createMultiplayerGameController.Index);
+            _navigator.NavigateTo(_lobbyController.Index);
         }
 
         private void BackButtonClicked()

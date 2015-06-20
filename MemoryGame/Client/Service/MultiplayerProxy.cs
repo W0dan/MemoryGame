@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using MemoryGame.Contracts;
 using MemoryGame.Extensions;
@@ -8,6 +9,7 @@ namespace MemoryGame.Client.Service
     public class MultiplayerProxy : IMultiplayerService
     {
         public event Action<string, string> ChatMessageReceived;
+        public event Action<string> PlayerJoined;
 
         private readonly ChannelFactory<IMultiplayerService> _factory;
 
@@ -16,6 +18,7 @@ namespace MemoryGame.Client.Service
             var callbackService = new CallbackService();
 
             callbackService.ChatMessageReceived += OnChatMessageReceived;
+            callbackService.PlayerJoined+=OnPlayerJoined;
 
             var callbackInstance = new InstanceContext(callbackService);
 
@@ -24,6 +27,11 @@ namespace MemoryGame.Client.Service
             var netTcpBinding = new NetTcpBinding(SecurityMode.None);
 
             _factory = new DuplexChannelFactory<IMultiplayerService>(callbackInstance, netTcpBinding, endpointAddress);
+        }
+
+        private void OnPlayerJoined(string player)
+        {
+            PlayerJoined.Raise(player);
         }
 
         private void OnChatMessageReceived(string player, string message)
@@ -43,6 +51,13 @@ namespace MemoryGame.Client.Service
             var channel = _factory.CreateChannel();
 
             channel.SendChatMessage(playertoken, message);
+        }
+
+        public List<string> GetPlayerList(string playertoken)
+        {
+            var channel = _factory.CreateChannel();
+
+            return channel.GetPlayerList(playertoken);
         }
     }
 }

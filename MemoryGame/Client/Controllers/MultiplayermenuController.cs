@@ -8,11 +8,13 @@ namespace MemoryGame.Client.Controllers
     {
         private readonly INavigator _navigator;
         private readonly IHostmenuController _hostmenuController;
+        private readonly IJoinController _joinController;
 
-        public MultiplayermenuController(INavigator navigator, IHostmenuController hostmenuController)
+        public MultiplayermenuController(INavigator navigator, IHostmenuController hostmenuController, IJoinController joinController)
         {
             _navigator = navigator;
             _hostmenuController = hostmenuController;
+            _joinController = joinController;
         }
 
         public UIElement Index()
@@ -28,7 +30,7 @@ namespace MemoryGame.Client.Controllers
 
         private void JoinButtonClicked()
         {
-
+            _navigator.NavigateTo(_joinController.Index);
         }
 
         private void HostButtonClicked()
