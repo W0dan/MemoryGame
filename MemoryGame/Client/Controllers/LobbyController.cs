@@ -1,17 +1,23 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MemoryGame.Client.Navigation;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
+using MemoryGame.Hosting;
 
 namespace MemoryGame.Client.Controllers
 {
     public class LobbyController : ILobbyController
     {
+        private readonly INavigator _navigator;
+        private readonly IHost _host;
         private readonly IPlayerContext _playerContext;
         private LobbyControl _view;
 
-        public LobbyController(IPlayerContext playerContext)
+        public LobbyController(INavigator navigator, IHost host, IPlayerContext playerContext)
         {
+            _navigator = navigator;
+            _host = host;
             _playerContext = playerContext;
 
             _playerContext.ChatMessageReceived += AppendToChatbox;
@@ -43,6 +49,11 @@ namespace MemoryGame.Client.Controllers
                 _view.StartButton.Visibility = Visibility.Visible;
                 _view.CancelButton.Content = "Cancel";
                 _view.NumberOfCardsSlider.Visibility = Visibility.Visible;
+                _view.CancelButtonClicked += CancelHosting;
+            }
+            else
+            {
+                _view.CancelButtonClicked += LeaveGame;
             }
 
             _view.TextEnteredInChatbox += TextEnteredInChatbox;
@@ -50,6 +61,20 @@ namespace MemoryGame.Client.Controllers
             RefreshPlayerList(_playerContext.PlayerName);
 
             return _view;
+        }
+
+        private void LeaveGame()
+        {
+            //todo: send Leave() message to server
+            _navigator.NavigateFromHistory();
+        }
+
+        private void CancelHosting()
+        {
+            //todo: notify all players that the host is about to stop
+            _host.Stop();
+
+            _navigator.NavigateFromHistory();
         }
 
         private void TextEnteredInChatbox(string text)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using MemoryGame.Client.Extensions;
+using MemoryGame.Extensions;
 
 namespace MemoryGame.Client.Views
 {

@@ -75,7 +75,6 @@
     <Compile Include="Client\Models\HostmenuModel.cs" />
     <Compile Include="Client\Navigation\INavigator.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
-    <Compile Include="Client\Extensions\ActionExtensions.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
     <Compile Include="Client\Service\IMultiplayerProxy.cs" />
     <Compile Include="Client\Service\IPlayerContext.cs" />
@@ -101,6 +100,7 @@
     <Compile Include="Client\Views\NavigationControl.xaml.cs">
       <DependentUpon>NavigationControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Hosting\IHost.cs" />
     <Compile Include="Client\Service\MultiplayerProxy.cs" />
     <Compile Include="Server\MultiplayerService.cs" />
@@ -144,7 +144,6 @@
     </Compile>
     <Compile Include="Contracts\IMultiplayerService.cs" />
     <Compile Include="Contracts\IPlayerCallback.cs" />
-    <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\Shell.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Client\Main.xaml.cs">
