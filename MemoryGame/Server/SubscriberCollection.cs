@@ -41,13 +41,13 @@ namespace MemoryGame.Server
 
                 var subscribersToRemove = new List<Subscriber<TSubscriberCallback>>();
 
-                foreach (var subscriber in _subscribers)
+                foreach (var subscriber in _subscribers.Where(sub => sub.Token != token))
                 {
                     try
                     {
                         action(subscriberFrom.Name, subscriber.Callback);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         subscribersToRemove.Add(subscriber);
                     }

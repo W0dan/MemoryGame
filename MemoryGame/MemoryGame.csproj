@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>memory64b.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -72,6 +75,9 @@
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Extensions\ActionExtensions.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
+    <Compile Include="Client\Service\IMultiplayerProxy.cs" />
+    <Compile Include="Client\Service\IPlayerContext.cs" />
+    <Compile Include="Client\Service\PlayerContext.cs" />
     <Compile Include="Client\Views\CreateMultiplayerGameControl.xaml.cs">
       <DependentUpon>CreateMultiplayerGameControl.xaml</DependentUpon>
     </Compile>
@@ -91,7 +97,7 @@
       <DependentUpon>NavigationControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hosting\IHost.cs" />
-    <Compile Include="Proxy\MultiplayerProxy.cs" />
+    <Compile Include="Client\Service\MultiplayerProxy.cs" />
     <Compile Include="Server\MultiplayerService.cs" />
     <Compile Include="Server\Subscriber.cs" />
     <Compile Include="Server\SubscriberCollection.cs" />
@@ -164,7 +170,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Client\Resources\Icons\mix_n_match_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Client\Resources\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="memory64b.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

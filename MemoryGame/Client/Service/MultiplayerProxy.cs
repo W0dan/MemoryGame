@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ServiceModel;
-using MemoryGame.Client.Service;
 using MemoryGame.Contracts;
 using MemoryGame.Extensions;
 
-namespace MemoryGame.Proxy
+namespace MemoryGame.Client.Service
 {
     public class MultiplayerProxy : IMultiplayerService
     {

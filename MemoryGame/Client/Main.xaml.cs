@@ -2,6 +2,7 @@
 using MemoryGame.Client.Controllers;
 using MemoryGame.Client.Extensions;
 using MemoryGame.Client.Navigation;
+using MemoryGame.Client.Service;
 using MemoryGame.Hosting;
 
 namespace MemoryGame.Client
@@ -23,8 +24,9 @@ namespace MemoryGame.Client
 
             var host = new Host();
             var ipAddressProvider = new IPAddressProvider();
-            var createMultiplayerGameController = new CreateMultiplayerGameController();
-            var hostmenuController = new HostmenuController(navigator, host, ipAddressProvider, createMultiplayerGameController);
+            var playerContext = new PlayerContext();
+            var createMultiplayerGameController = new CreateMultiplayerGameController(playerContext);
+            var hostmenuController = new HostmenuController(navigator, host, ipAddressProvider, createMultiplayerGameController, playerContext);
             var multiplayermenuController = new MultiplayermenuController(navigator, hostmenuController);
             var mainmenuController = new MainmenuController(navigator, multiplayermenuController);
             var masterController = new MasterController(navigator, mainmenuController);
