@@ -2,6 +2,7 @@
 using MemoryGame.Client.Controllers;
 using MemoryGame.Client.Extensions;
 using MemoryGame.Client.Navigation;
+using MemoryGame.Hosting;
 
 namespace MemoryGame.Client
 {
@@ -19,7 +20,8 @@ namespace MemoryGame.Client
             //some bootstrapping going on here:
             var navigator = new Navigator();
 
-            var hostmenuController = new HostmenuController();
+            var host = new Host();
+            var hostmenuController = new HostmenuController(navigator, host);
             var multiplayermenuController = new MultiplayermenuController(navigator, hostmenuController);
             var mainmenuController = new MainmenuController(navigator, multiplayermenuController);
             var masterController = new MasterController(navigator, mainmenuController);

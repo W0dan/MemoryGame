@@ -41,7 +41,7 @@ namespace MemoryGame.Client.Navigation
                 _layoutGrid.Children.Remove(_activeControl);
 
             _activeControl = action();
-            _layoutGrid.CreateContentControl(_activeControl, 1, 1);
+            _layoutGrid.CreateContentControl(_activeControl);
         }
     }
 }

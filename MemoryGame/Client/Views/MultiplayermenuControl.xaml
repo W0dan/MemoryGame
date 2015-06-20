@@ -19,7 +19,7 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="10,10,10,10"  FontSize="20" FontWeight="Bold" Grid.ColumnSpan="3">Main Menu</TextBlock>
+        <TextBlock Margin="10,10,10,10"  FontSize="20" FontWeight="Bold" Grid.ColumnSpan="3">Multiplayer</TextBlock>
         <Button Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="1" Content="Host" Name="HostButton" Click="HostButtonClick" FontSize="20" FontWeight="Bold"></Button>
         <Button Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="2" Content="Join" Name="JoinButton" Click="JoinButtonClick" FontSize="20" FontWeight="Bold"></Button>
         <Button Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="4" Content="Back" Name="BackButton" Click="BackButtonClick" FontSize="20" FontWeight="Bold"></Button>

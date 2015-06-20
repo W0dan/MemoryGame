@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using MemoryGame.Client.Extensions;
 
 namespace MemoryGame.Client.Views
 {
@@ -20,9 +10,25 @@ namespace MemoryGame.Client.Views
     /// </summary>
     public partial class HostmenuControl : UserControl
     {
+        public event Action BackButtonClicked;
+        public event Action<string, string> StartHostingButtonClicked;
+
         public HostmenuControl()
         {
             InitializeComponent();
+        }
+
+        private void BackButtonClick(object sender, RoutedEventArgs e)
+        {
+            BackButtonClicked.Raise();
+        }
+
+        private void StartHostingButtonClick(object sender, RoutedEventArgs e)
+        {
+            var port = PortTextbox.Text;
+            var playerName = PlayerName.Text;
+
+            StartHostingButtonClicked.Raise(playerName, port);
         }
     }
 }
