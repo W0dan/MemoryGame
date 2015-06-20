@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using MemoryGame.Client.Extensions;
+using MemoryGame.Client.Models;
 using MemoryGame.Client.Navigation;
 using MemoryGame.Client.Views;
 using MemoryGame.Hosting;
@@ -9,16 +11,25 @@ namespace MemoryGame.Client.Controllers
     {
         private readonly INavigator _navigator;
         private readonly IHost _host;
+        private readonly IIPAddressProvider _ipAddressProvider;
+        private readonly ICreateMultiplayerGameController _createMultiplayerGameController;
 
-        public HostmenuController(INavigator navigator, IHost host)
+        public HostmenuController(INavigator navigator, IHost host, IIPAddressProvider ipAddressProvider, ICreateMultiplayerGameController createMultiplayerGameController)
         {
             _navigator = navigator;
             _host = host;
+            _ipAddressProvider = ipAddressProvider;
+            _createMultiplayerGameController = createMultiplayerGameController;
         }
 
         public UIElement Index()
         {
-            var view = new HostmenuControl();
+            var ipAddress = _ipAddressProvider.GetLocalIPAddress();
+
+            var view = new HostmenuControl(new HostmenuModel
+            {
+                LocalIPAddress = ipAddress.ToString()
+            });
 
             view.BackButtonClicked += BackButtonClicked;
             view.StartHostingButtonClicked += StartHostingButtonClicked;
@@ -39,6 +50,7 @@ namespace MemoryGame.Client.Controllers
             _host.Start(playerName, intPort);
 
             //todo: navigate to 'Start game' -screen
+            _navigator.NavigateTo(_createMultiplayerGameController.Index);
         }
 
         private void BackButtonClicked()

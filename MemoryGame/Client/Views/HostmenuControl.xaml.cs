@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using MemoryGame.Client.Extensions;
+using MemoryGame.Client.Models;
 
 namespace MemoryGame.Client.Views
 {
@@ -13,9 +14,11 @@ namespace MemoryGame.Client.Views
         public event Action BackButtonClicked;
         public event Action<string, string> StartHostingButtonClicked;
 
-        public HostmenuControl()
+        public HostmenuControl(HostmenuModel model)
         {
             InitializeComponent();
+
+            IPAddressLabel.Content = model.LocalIPAddress;
         }
 
         private void BackButtonClick(object sender, RoutedEventArgs e)

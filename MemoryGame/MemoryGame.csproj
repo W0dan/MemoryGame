@@ -54,7 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client\Controllers\CreateMultiplayerGameController.cs" />
     <Compile Include="Client\Controllers\HostmenuController.cs" />
+    <Compile Include="Client\Controllers\ICreateMultiplayerGameController.cs" />
     <Compile Include="Client\Controllers\IHostmenuController.cs" />
     <Compile Include="Client\Controllers\IMasterController.cs" />
     <Compile Include="Client\Controllers\IMainmenuController.cs" />
@@ -63,10 +65,16 @@
     <Compile Include="Client\Controllers\MainmenuController.cs" />
     <Compile Include="Client\Controllers\MultiplayermenuController.cs" />
     <Compile Include="Client\Extensions\GridExtensions.cs" />
+    <Compile Include="Client\Extensions\IIPAddressProvider.cs" />
+    <Compile Include="Client\Extensions\IPAddressProvider.cs" />
+    <Compile Include="Client\Models\HostmenuModel.cs" />
     <Compile Include="Client\Navigation\INavigator.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Extensions\ActionExtensions.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
+    <Compile Include="Client\Views\CreateMultiplayerGameControl.xaml.cs">
+      <DependentUpon>CreateMultiplayerGameControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Client\Views\HostmenuControl.xaml.cs">
       <DependentUpon>HostmenuControl.xaml</DependentUpon>
     </Compile>
@@ -87,6 +95,10 @@
     <Compile Include="Server\MultiplayerService.cs" />
     <Compile Include="Server\Subscriber.cs" />
     <Compile Include="Server\SubscriberCollection.cs" />
+    <Page Include="Client\Views\CreateMultiplayerGameControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Client\Views\HostmenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

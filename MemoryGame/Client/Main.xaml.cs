@@ -18,10 +18,13 @@ namespace MemoryGame.Client
         private void CreateMasterLayout()
         {
             //some bootstrapping going on here:
+            //(poor man's di)
             var navigator = new Navigator();
 
             var host = new Host();
-            var hostmenuController = new HostmenuController(navigator, host);
+            var ipAddressProvider = new IPAddressProvider();
+            var createMultiplayerGameController = new CreateMultiplayerGameController();
+            var hostmenuController = new HostmenuController(navigator, host, ipAddressProvider, createMultiplayerGameController);
             var multiplayermenuController = new MultiplayermenuController(navigator, hostmenuController);
             var mainmenuController = new MainmenuController(navigator, multiplayermenuController);
             var masterController = new MasterController(navigator, mainmenuController);
