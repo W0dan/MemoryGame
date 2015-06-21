@@ -57,6 +57,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client\Controllers\GameController.cs" />
+    <Compile Include="Client\Controllers\IGameController.cs" />
     <Compile Include="Client\Controllers\IJoinController.cs" />
     <Compile Include="Client\Controllers\JoinController.cs" />
     <Compile Include="Client\Controllers\LobbyController.cs" />
@@ -76,9 +78,13 @@
     <Compile Include="Client\Navigation\INavigator.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
+    <Compile Include="Server\GameCore.cs" />
     <Compile Include="Client\Service\IMultiplayerProxy.cs" />
     <Compile Include="Client\Service\IPlayerContext.cs" />
     <Compile Include="Client\Service\PlayerContext.cs" />
+    <Compile Include="Client\Views\GameControl.xaml.cs">
+      <DependentUpon>GameControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Client\Views\JoinControl.xaml.cs">
       <DependentUpon>JoinControl.xaml</DependentUpon>
     </Compile>
@@ -100,12 +106,17 @@
     <Compile Include="Client\Views\NavigationControl.xaml.cs">
       <DependentUpon>NavigationControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\RoundRobin.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Hosting\IHost.cs" />
     <Compile Include="Client\Service\MultiplayerProxy.cs" />
     <Compile Include="Server\MultiplayerService.cs" />
     <Compile Include="Server\Subscriber.cs" />
     <Compile Include="Server\SubscriberCollection.cs" />
+    <Page Include="Client\Views\GameControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Client\Views\JoinControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

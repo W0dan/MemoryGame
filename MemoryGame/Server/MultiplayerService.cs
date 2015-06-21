@@ -8,6 +8,7 @@ namespace MemoryGame.Server
     public class MultiplayerService : IMultiplayerService
     {
         private readonly SubscriberCollection<IPlayerCallback> _players = new SubscriberCollection<IPlayerCallback>();
+        private GameCore _game;
 
         public string Join(string playerName)
         {
@@ -32,6 +33,17 @@ namespace MemoryGame.Server
         public List<string> GetPlayerList(string playertoken)
         {
             return _players.GetPlayerNames();
+        }
+
+        public void StartGame(string playertokenFrom, int rows, int columns)
+        {
+            //create a roundrobin collection of the players
+            var players = _players.GetPlayersRoundRobin();
+            _game = new GameCore(players);
+            //todo: send to players that the game is started
+            _players.Send(playertokenFrom, (player, callback)=> callback.OnGameStarted(rows, columns));
+
+            //todo: send to starting player that it's his/her turn
         }
     }
 }

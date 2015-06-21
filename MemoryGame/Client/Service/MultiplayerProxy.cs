@@ -10,6 +10,7 @@ namespace MemoryGame.Client.Service
     {
         public event Action<string, string> ChatMessageReceived;
         public event Action<string> PlayerJoined;
+        public event Action<int, int> GameStarted;
 
         private readonly ChannelFactory<IMultiplayerService> _factory;
 
@@ -18,7 +19,8 @@ namespace MemoryGame.Client.Service
             var callbackService = new CallbackService();
 
             callbackService.ChatMessageReceived += OnChatMessageReceived;
-            callbackService.PlayerJoined+=OnPlayerJoined;
+            callbackService.PlayerJoined += OnPlayerJoined;
+            callbackService.GameStarted += OnGameStarted;
 
             var callbackInstance = new InstanceContext(callbackService);
 
@@ -27,6 +29,11 @@ namespace MemoryGame.Client.Service
             var netTcpBinding = new NetTcpBinding(SecurityMode.None);
 
             _factory = new DuplexChannelFactory<IMultiplayerService>(callbackInstance, netTcpBinding, endpointAddress);
+        }
+
+        private void OnGameStarted(int rows, int columns)
+        {
+            GameStarted.Raise(rows, columns);
         }
 
         private void OnPlayerJoined(string player)
@@ -41,23 +48,49 @@ namespace MemoryGame.Client.Service
 
         public string Join(string player)
         {
-            var channel = _factory.CreateChannel();
-
-            return channel.Join(player);
+            return Execute(channel => channel.Join(player));
         }
 
         public void SendChatMessage(string playertoken, string message)
         {
-            var channel = _factory.CreateChannel();
-
-            channel.SendChatMessage(playertoken, message);
+            Execute(channel => channel.SendChatMessage(playertoken, message));
         }
 
         public List<string> GetPlayerList(string playertoken)
         {
+            return Execute(channel => channel.GetPlayerList(playertoken));
+        }
+
+        public void StartGame(string playertokenFrom, int rows, int columns)
+        {
+            Execute(channel => channel.StartGame(playertokenFrom, rows, columns));
+        }
+
+        private TResult Execute<TResult>(Func<IMultiplayerService, TResult> func)
+        {
             var channel = _factory.CreateChannel();
 
-            return channel.GetPlayerList(playertoken);
+            return func(channel);
+
+            //var result = defaultResult;
+
+            //Task.Factory.StartNew(() => result = func(channel));
+
+            //while (EqualityComparer<TResult>.Default.Equals(result, defaultResult))
+            //{
+            //    Thread.Sleep(100);
+            //}
+
+            //return result;
+        }
+
+        private void Execute(Action<IMultiplayerService> action)
+        {
+            var channel = _factory.CreateChannel();
+
+            action(channel);
+
+            //Task.Factory.StartNew(() => action(channel));
         }
     }
 }

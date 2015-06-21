@@ -12,16 +12,15 @@ namespace MemoryGame.Client.Controllers
         private readonly INavigator _navigator;
         private readonly IHost _host;
         private readonly IPlayerContext _playerContext;
+        private readonly IGameController _gameController;
         private LobbyControl _view;
 
-        public LobbyController(INavigator navigator, IHost host, IPlayerContext playerContext)
+        public LobbyController(INavigator navigator, IHost host, IPlayerContext playerContext, IGameController gameController)
         {
             _navigator = navigator;
             _host = host;
             _playerContext = playerContext;
-
-            _playerContext.ChatMessageReceived += AppendToChatbox;
-            _playerContext.PlayerJoined += RefreshPlayerList;
+            _gameController = gameController;
         }
 
         private void RefreshPlayerList(string player)
@@ -44,16 +43,21 @@ namespace MemoryGame.Client.Controllers
         {
             _view = new LobbyControl();
 
+            _playerContext.ChatMessageReceived += AppendToChatbox;
+            _playerContext.PlayerJoined += RefreshPlayerList;
+
             if (isHost)
             {
                 _view.StartButton.Visibility = Visibility.Visible;
                 _view.CancelButton.Content = "Cancel";
                 _view.NumberOfCardsSlider.Visibility = Visibility.Visible;
                 _view.CancelButtonClicked += CancelHosting;
+                _view.StartButtonClicked += StartGame;
             }
             else
             {
                 _view.CancelButtonClicked += LeaveGame;
+                _playerContext.GameStarted += GameStarted;
             }
 
             _view.TextEnteredInChatbox += TextEnteredInChatbox;
@@ -61,6 +65,22 @@ namespace MemoryGame.Client.Controllers
             RefreshPlayerList(_playerContext.PlayerName);
 
             return _view;
+        }
+
+        private void GameStarted(int rows, int columns)
+        {
+            _navigator.NavigateTo(() => _gameController.Index(rows, columns));
+        }
+
+        private void StartGame(int rows, int columns)
+        {
+            //todo: send a message to server to stop accepting new players
+            //todo: and also to stop accepting chat messages
+            //todo: and to start an instance of the game core
+
+            _playerContext.StartGame(rows, columns);
+
+            _navigator.NavigateTo(() => _gameController.Index(rows, columns));
         }
 
         private void LeaveGame()

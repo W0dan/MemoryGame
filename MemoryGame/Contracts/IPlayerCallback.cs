@@ -9,5 +9,8 @@ namespace MemoryGame.Contracts
 
         [OperationContract(IsOneWay = true)]
         void OnPlayerJoined(string player);
+
+        [OperationContract(IsOneWay = true)]
+        void OnGameStarted(int rows, int columns);
     }
 }

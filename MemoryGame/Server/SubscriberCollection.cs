@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MemoryGame.Common;
 
 namespace MemoryGame.Server
 {
@@ -33,15 +34,15 @@ namespace MemoryGame.Server
             }
         }
 
-        public void Send(string token, Action<string, TSubscriberCallback> action)
+        public void Send(string playerTokenFrom, Action<string, TSubscriberCallback> action)
         {
             Task.Factory.StartNew(() =>
             {
-                var subscriberFrom = _subscribers.Single(s => s.Token == token);
+                var subscriberFrom = _subscribers.Single(s => s.Token == playerTokenFrom);
 
                 var subscribersToRemove = new List<Subscriber<TSubscriberCallback>>();
 
-                foreach (var subscriber in _subscribers.Where(sub => sub.Token != token))
+                foreach (var subscriber in _subscribers.Where(sub => sub.Token != playerTokenFrom))
                 {
                     try
                     {
@@ -63,6 +64,12 @@ namespace MemoryGame.Server
         public List<string> GetPlayerNames()
         {
             return _subscribers.Select(subscriber => subscriber.Name).ToList();
+        }
+
+        public RoundRobin<string> GetPlayersRoundRobin()
+        {
+            var tokens = _subscribers.Select(subscriber => subscriber.Token);
+            return new RoundRobin<string>(tokens);
         }
     }
 }

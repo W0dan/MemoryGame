@@ -10,9 +10,12 @@ namespace MemoryGame.Contracts
         string Join(string player);
 
         [OperationContract(IsOneWay = true)]
-        void SendChatMessage(string playertoken, string message);
+        void SendChatMessage(string playertokenFrom, string message);
 
         [OperationContract]
         List<string> GetPlayerList(string playertoken);
+
+        [OperationContract(IsOneWay = true)]
+        void StartGame(string playertokenFrom, int rows, int columns);
     }
 }

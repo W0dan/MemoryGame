@@ -23,7 +23,7 @@ namespace MemoryGame.Client.Controllers
             var view = new JoinControl();
 
             view.BackButtonClicked += BackButtonClicked;
-            view.JoinButtonClicked+=JoinButtonClicked;
+            view.JoinButtonClicked += JoinButtonClicked;
 
             return view;
         }
