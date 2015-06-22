@@ -11,14 +11,22 @@ namespace MemoryGame.Client.Service
 
         private MultiplayerProxy _service;
         private string _playerToken;
+        private string _host;
+        private string _port;
 
         public string PlayerName { get; private set; }
 
-        public void Join(string host, string port, string playerName)
+        public void SetJoinParameters(string host, string port, string playerName)
         {
             PlayerName = playerName;
 
-            _service = new MultiplayerProxy(host, port);
+            _host = host;
+            _port = port;
+        }
+
+        public void Join()
+        {
+            _service = new MultiplayerProxy(_host, _port);
 
             _service.ChatMessageReceived += ChatMessageReceived;
             _service.PlayerJoined += PlayerJoined;
@@ -26,7 +34,7 @@ namespace MemoryGame.Client.Service
 
             //todo: display error when join fails with exception
             //todo: display error when join returns null token (meaning playerName allready exists on the server)
-            _playerToken = _service.Join(playerName);
+            _playerToken = _service.Join(PlayerName);
         }
 
         public void SendChatMessage(string text)

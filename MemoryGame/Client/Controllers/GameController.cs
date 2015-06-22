@@ -12,7 +12,9 @@ namespace MemoryGame.Client.Controllers
 
         public UIElement Index(int rows, int columns)
         {
-            return new GameControl();
+            var gameControl = new GameControl();
+
+            return gameControl;
         }
     }
 }

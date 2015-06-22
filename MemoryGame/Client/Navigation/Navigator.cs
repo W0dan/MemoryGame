@@ -37,11 +37,14 @@ namespace MemoryGame.Client.Navigation
 
         private static void ActivateAction(Func<UIElement> action)
         {
-            if (_activeControl != null)
-                _layoutGrid.Children.Remove(_activeControl);
+            _layoutGrid.Dispatcher.Invoke(() =>
+            {
+                if (_activeControl != null)
+                    _layoutGrid.Children.Remove(_activeControl);
 
-            _activeControl = action();
-            _layoutGrid.CreateContentControl(_activeControl);
+                _activeControl = action();
+                _layoutGrid.CreateContentControl(_activeControl);
+            });
         }
     }
 }

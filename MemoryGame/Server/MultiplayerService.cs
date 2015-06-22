@@ -41,7 +41,7 @@ namespace MemoryGame.Server
             var players = _players.GetPlayersRoundRobin();
             _game = new GameCore(players);
             //todo: send to players that the game is started
-            _players.Send(playertokenFrom, (player, callback)=> callback.OnGameStarted(rows, columns));
+            _players.Send(playertokenFrom, (player, callback) => callback.OnGameStarted(rows, columns));
 
             //todo: send to starting player that it's his/her turn
         }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -27,34 +28,37 @@ namespace MemoryGame.Client.Controllers
 
         private void RefreshPlayerList(string player)
         {
-            _view.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            _view.PlayersStackpanel.Dispatcher.Invoke(() =>
             {
-                var playerList = _playerContext.GetPlayerList();
+            var playerList = _playerContext.GetPlayerList();
 
-                _view.PlayersStackpanel.Children.Clear();
-                foreach (var p in playerList)
-                {
-                    _view.PlayersStackpanel.Children.Add(new Label { Content = p });
-                }
-            }));
+            _view.PlayersStackpanel.Children.Clear();
+            foreach (var p in playerList)
+            {
+                _view.PlayersStackpanel.Children.Add(new Label { Content = p });
+            }
+            });
         }
 
         private void AppendToChatbox(string player, string message)
         {
-            _view.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            _view.ChatBox.Dispatcher.Invoke(() =>
             {
-                _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
-            }));
+            _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
+            });
         }
 
         public UIElement Index(bool isHost)
         {
+            Debug.WriteLine(_playerContext.PlayerName + " is on thread " + Thread.CurrentThread.ManagedThreadId);
+
             _view = new LobbyControl();
 
             _playerContext.ChatMessageReceived += AppendToChatbox;
             _playerContext.PlayerJoined += RefreshPlayerList;
+            _playerContext.GameStarted += GameStarted;
 
-            _view.TextEnteredInChatbox += TextEnteredInChatbox;
+            _playerContext.Join();
 
             if (isHost)
             {
@@ -67,11 +71,8 @@ namespace MemoryGame.Client.Controllers
             else
             {
                 _view.CancelButtonClicked += LeaveGame;
-                _playerContext.GameStarted += GameStarted;
             }
 
-
-            //RefreshPlayerList(_playerContext.PlayerName);
 
             return _view;
         }
@@ -89,7 +90,7 @@ namespace MemoryGame.Client.Controllers
 
             _playerContext.StartGame(rows, columns);
 
-            _navigator.NavigateTo(() => _gameController.Index(rows, columns));
+            //_navigator.NavigateTo(() => _gameController.Index(rows, columns));
         }
 
         private void LeaveGame()
@@ -110,7 +111,6 @@ namespace MemoryGame.Client.Controllers
         {
             _playerContext.SendChatMessage(text);
 
-            AppendToChatbox(_playerContext.PlayerName, text);
             _view.ChatTextbox.Text = "";
         }
     }
