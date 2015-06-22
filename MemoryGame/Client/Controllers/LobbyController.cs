@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using MemoryGame.Client.Navigation;
 using MemoryGame.Client.Service;
@@ -19,30 +21,40 @@ namespace MemoryGame.Client.Controllers
             _navigator = navigator;
             _host = host;
             _playerContext = playerContext;
-
-            _playerContext.ChatMessageReceived += AppendToChatbox;
-            _playerContext.PlayerJoined += RefreshPlayerList;
         }
 
         private void RefreshPlayerList(string player)
         {
-            var playerList = _playerContext.GetPlayerList();
-
-            _view.PlayersStackpanel.Children.Clear();
-            foreach (var p in playerList)
+            _view.PlayersStackpanel.Dispatcher.Invoke(() =>
             {
-                _view.PlayersStackpanel.Children.Add(new Label { Content = p });
-            }
+                var playerList = _playerContext.GetPlayerList();
+
+                _view.PlayersStackpanel.Children.Clear();
+                foreach (var p in playerList)
+                {
+                    _view.PlayersStackpanel.Children.Add(new Label { Content = p });
+                }
+            });
         }
 
         private void AppendToChatbox(string player, string message)
         {
-            _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
+            _view.ChatBox.Dispatcher.Invoke(() =>
+            {
+                _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
+            });
         }
 
         public UIElement Index(bool isHost)
         {
+            Debug.WriteLine(_playerContext.PlayerName + " is on thread " + Thread.CurrentThread.ManagedThreadId);
+
             _view = new LobbyControl();
+
+            _playerContext.ChatMessageReceived += AppendToChatbox;
+            _playerContext.PlayerJoined += RefreshPlayerList;
+
+            _playerContext.Join();
 
             if (isHost)
             {
@@ -57,8 +69,6 @@ namespace MemoryGame.Client.Controllers
             }
 
             _view.TextEnteredInChatbox += TextEnteredInChatbox;
-
-            RefreshPlayerList(_playerContext.PlayerName);
 
             return _view;
         }
@@ -81,7 +91,6 @@ namespace MemoryGame.Client.Controllers
         {
             _playerContext.SendChatMessage(text);
 
-            AppendToChatbox(_playerContext.PlayerName, text);
             _view.ChatTextbox.Text = "";
         }
     }

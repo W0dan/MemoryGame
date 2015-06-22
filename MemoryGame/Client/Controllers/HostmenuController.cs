@@ -52,7 +52,7 @@ namespace MemoryGame.Client.Controllers
 
             _host.Start(playerName, intPort);
 
-            _playerContext.Join(_ipAddressProvider.GetLocalIPAddress().ToString(), port, playerName);
+            _playerContext.SetJoinParameters(_ipAddressProvider.GetLocalIPAddress().ToString(), port, playerName);
 
             _navigator.NavigateTo(() => _lobbyController.Index(true));
         }

@@ -30,7 +30,7 @@ namespace MemoryGame.Client.Controllers
 
         private void JoinButtonClicked(string playerName, string ipAddress, string port)
         {
-            _playerContext.Join(ipAddress, port, playerName);
+            _playerContext.SetJoinParameters(ipAddress, port, playerName);
 
             _navigator.NavigateTo(() => _lobbyController.Index(false));
         }

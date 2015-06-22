@@ -8,7 +8,8 @@ namespace MemoryGame.Client.Service
         event Action<string> PlayerJoined;
         event Action<string, string> ChatMessageReceived;
 
-        void Join(string host, string port, string playerName);
+        void SetJoinParameters(string host, string port, string playerName);
+        void Join();
         void SendChatMessage(string text);
         List<string> GetPlayerList();
         string PlayerName { get; }
