@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using MemoryGame.Client.Navigation;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
@@ -25,18 +27,24 @@ namespace MemoryGame.Client.Controllers
 
         private void RefreshPlayerList(string player)
         {
-            var playerList = _playerContext.GetPlayerList();
-
-            _view.PlayersStackpanel.Children.Clear();
-            foreach (var p in playerList)
+            _view.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                _view.PlayersStackpanel.Children.Add(new Label { Content = p });
-            }
+                var playerList = _playerContext.GetPlayerList();
+
+                _view.PlayersStackpanel.Children.Clear();
+                foreach (var p in playerList)
+                {
+                    _view.PlayersStackpanel.Children.Add(new Label { Content = p });
+                }
+            }));
         }
 
         private void AppendToChatbox(string player, string message)
         {
-            _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
+            _view.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
+            }));
         }
 
         public UIElement Index(bool isHost)
@@ -45,6 +53,8 @@ namespace MemoryGame.Client.Controllers
 
             _playerContext.ChatMessageReceived += AppendToChatbox;
             _playerContext.PlayerJoined += RefreshPlayerList;
+
+            _view.TextEnteredInChatbox += TextEnteredInChatbox;
 
             if (isHost)
             {
@@ -60,9 +70,8 @@ namespace MemoryGame.Client.Controllers
                 _playerContext.GameStarted += GameStarted;
             }
 
-            _view.TextEnteredInChatbox += TextEnteredInChatbox;
 
-            RefreshPlayerList(_playerContext.PlayerName);
+            //RefreshPlayerList(_playerContext.PlayerName);
 
             return _view;
         }

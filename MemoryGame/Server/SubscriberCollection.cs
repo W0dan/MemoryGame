@@ -42,7 +42,8 @@ namespace MemoryGame.Server
 
                 var subscribersToRemove = new List<Subscriber<TSubscriberCallback>>();
 
-                foreach (var subscriber in _subscribers.Where(sub => sub.Token != playerTokenFrom))
+                //foreach (var subscriber in _subscribers.Where(sub => sub.Token != playerTokenFrom))
+                foreach (var subscriber in _subscribers)
                 {
                     try
                     {
