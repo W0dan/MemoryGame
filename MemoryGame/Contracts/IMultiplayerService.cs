@@ -15,7 +15,13 @@ namespace MemoryGame.Contracts
         [OperationContract]
         List<string> GetPlayerList(string playertoken);
 
+        [OperationContract]
+        void ReadyToRumble(string playertoken);
+
         [OperationContract(IsOneWay = true)]
         void StartGame(string playertokenFrom, int rows, int columns);
+
+        [OperationContract(IsOneWay = true)]
+        void CardClicked(string playertoken, int row, int column);
     }
 }

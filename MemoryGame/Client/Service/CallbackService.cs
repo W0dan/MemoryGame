@@ -11,6 +11,8 @@ namespace MemoryGame.Client.Service
         public event Action<string, string> ChatMessageReceived;
         public event Action<string> PlayerJoined;
         public event Action<int, int> GameStarted;
+        public event Action YourTurn;
+        public event Action<string> PlayerIsOnTurn;
 
         public void OnChatMessageReceived(string player, string message)
         {
@@ -25,6 +27,16 @@ namespace MemoryGame.Client.Service
         public void OnGameStarted(int rows, int columns)
         {
             GameStarted.Raise(rows, columns);
+        }
+
+        public void OnYourTurn()
+        {
+            YourTurn.Raise();
+        }
+
+        public void OnPlayerIsOnTurn(string player)
+        {
+            PlayerIsOnTurn.Raise(player);
         }
     }
 }

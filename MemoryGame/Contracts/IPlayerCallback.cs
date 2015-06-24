@@ -12,5 +12,11 @@ namespace MemoryGame.Contracts
 
         [OperationContract(IsOneWay = true)]
         void OnGameStarted(int rows, int columns);
+
+        [OperationContract(IsOneWay = true)]
+        void OnYourTurn();
+
+        [OperationContract(IsOneWay = true)]
+        void OnPlayerIsOnTurn(string player);
     }
 }

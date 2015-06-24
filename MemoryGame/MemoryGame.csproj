@@ -76,6 +76,7 @@
     <Compile Include="Client\Extensions\IPAddressProvider.cs" />
     <Compile Include="Client\Models\HostmenuModel.cs" />
     <Compile Include="Client\Navigation\INavigator.cs" />
+    <Compile Include="Client\Resources\ResourceHelper.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
     <Compile Include="Server\GameCore.cs" />
@@ -188,14 +189,51 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Client\Resources\Icons\mix_n_match_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Client\Resources\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="memory64b.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Icons\memory64b.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\000.png" />
+    <Resource Include="Client\Resources\Images\001.png" />
+    <Resource Include="Client\Resources\Images\002.png" />
+    <Resource Include="Client\Resources\Images\003.png" />
+    <Resource Include="Client\Resources\Images\004.png" />
+    <Resource Include="Client\Resources\Images\005.png" />
+    <Resource Include="Client\Resources\Images\006.png" />
+    <Resource Include="Client\Resources\Images\007.png" />
+    <Resource Include="Client\Resources\Images\008.png" />
+    <Resource Include="Client\Resources\Images\009.png" />
+    <Resource Include="Client\Resources\Images\010.png" />
+    <Resource Include="Client\Resources\Images\011.png" />
+    <Resource Include="Client\Resources\Images\012.png" />
+    <Resource Include="Client\Resources\Images\013.png" />
+    <Resource Include="Client\Resources\Images\014.png" />
+    <Resource Include="Client\Resources\Images\015.png" />
+    <Resource Include="Client\Resources\Images\016.png" />
+    <Resource Include="Client\Resources\Images\017.png" />
+    <Resource Include="Client\Resources\Images\018.png" />
+    <Resource Include="Client\Resources\Images\019.png" />
+    <Resource Include="Client\Resources\Images\020.png" />
+    <Resource Include="Client\Resources\Images\021.png" />
+    <Resource Include="Client\Resources\Images\022.png" />
+    <Resource Include="Client\Resources\Images\023.png" />
+    <Resource Include="Client\Resources\Images\024.png" />
+    <Resource Include="Client\Resources\Images\025.png" />
+    <Resource Include="Client\Resources\Images\026.png" />
+    <Resource Include="Client\Resources\Images\027.png" />
+    <Resource Include="Client\Resources\Images\028.png" />
+    <Resource Include="Client\Resources\Images\029.png" />
+    <Resource Include="Client\Resources\Images\030.png" />
+    <Resource Include="Client\Resources\Images\031.png" />
+    <Resource Include="Client\Resources\Images\032.png" />
+    <Resource Include="Client\Resources\Images\033.png" />
+    <Resource Include="Client\Resources\Images\034.png" />
+    <Resource Include="Client\Resources\Images\035.png" />
+    <Resource Include="Client\Resources\Images\036.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,7 +10,7 @@ namespace MemoryGame.Client.Views
     {
         public event Action<string> TextEnteredInChatbox;
         public event Action CancelButtonClicked;
-        public event Action<int, int> StartButtonClicked;
+        public event Action<int> StartButtonClicked;
 
         public LobbyControl()
         {
@@ -32,12 +32,7 @@ namespace MemoryGame.Client.Views
 
         private void StartButtonClick(object sender, RoutedEventArgs e)
         {
-            var numberOfCardsLevel = NumberOfCardsSlider.Value;
-
-            var rows = (int)numberOfCardsLevel + 1;
-            var columns = (int)numberOfCardsLevel + 2;
-
-            StartButtonClicked.Raise(rows, columns);
+            StartButtonClicked.Raise((int)NumberOfCardsSlider.Value);
         }
     }
 }

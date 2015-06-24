@@ -11,6 +11,8 @@ namespace MemoryGame.Client.Service
         public event Action<string, string> ChatMessageReceived;
         public event Action<string> PlayerJoined;
         public event Action<int, int> GameStarted;
+        public event Action YourTurn;
+        public event Action<string> PlayerIsOnTurn;
 
         private readonly ChannelFactory<IMultiplayerService> _factory;
 
@@ -18,9 +20,11 @@ namespace MemoryGame.Client.Service
         {
             var callbackService = new CallbackService();
 
-            callbackService.ChatMessageReceived += OnChatMessageReceived;
-            callbackService.PlayerJoined += OnPlayerJoined;
-            callbackService.GameStarted += OnGameStarted;
+            callbackService.ChatMessageReceived += (player, message) => ChatMessageReceived.Raise(player, message);
+            callbackService.PlayerJoined += player => PlayerJoined.Raise(player);
+            callbackService.GameStarted += (rows, columns) => GameStarted.Raise(rows, columns);
+            callbackService.YourTurn += () => YourTurn.Raise();
+            callbackService.PlayerIsOnTurn += player => PlayerIsOnTurn.Raise(player);
 
             var callbackInstance = new InstanceContext(callbackService);
 
@@ -29,21 +33,6 @@ namespace MemoryGame.Client.Service
             var netTcpBinding = new NetTcpBinding(SecurityMode.None);
 
             _factory = new DuplexChannelFactory<IMultiplayerService>(callbackInstance, netTcpBinding, endpointAddress);
-        }
-
-        private void OnGameStarted(int rows, int columns)
-        {
-            GameStarted.Raise(rows, columns);
-        }
-
-        private void OnPlayerJoined(string player)
-        {
-            PlayerJoined.Raise(player);
-        }
-
-        private void OnChatMessageReceived(string player, string message)
-        {
-            ChatMessageReceived.Raise(player, message);
         }
 
         public string Join(string player)
@@ -61,9 +50,19 @@ namespace MemoryGame.Client.Service
             return Execute(channel => channel.GetPlayerList(playertoken));
         }
 
+        public void ReadyToRumble(string playertoken)
+        {
+            Execute(channel => channel.ReadyToRumble(playertoken));
+        }
+
         public void StartGame(string playertokenFrom, int rows, int columns)
         {
             Execute(channel => channel.StartGame(playertokenFrom, rows, columns));
+        }
+
+        public void CardClicked(string playertoken, int row, int column)
+        {
+            Execute(channel => channel.CardClicked(playertoken, row, column));
         }
 
         private TResult Execute<TResult>(Func<IMultiplayerService, TResult> func)

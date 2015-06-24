@@ -19,15 +19,15 @@ namespace MemoryGame.Server
                 return null;
             }
 
-            _players.Send(joinedPlayer.Token, (player, callback) => callback.OnPlayerJoined(player));
-            _players.Send(joinedPlayer.Token, (player, callback) => callback.OnChatMessageReceived(player, string.Format("{0} has joined", joinedPlayer.Name)));
+            _players.Send(joinedPlayer.Token, (player, callback) => callback.OnPlayerJoined(player.Name));
+            _players.Send(joinedPlayer.Token, (player, callback) => callback.OnChatMessageReceived(player.Name, string.Format("{0} has joined", joinedPlayer.Name)));
 
             return joinedPlayer.Token;
         }
 
         public void SendChatMessage(string playertoken, string message)
         {
-            _players.Send(playertoken, (player, callback) => callback.OnChatMessageReceived(player, message));
+            _players.Send(playertoken, (player, callback) => callback.OnChatMessageReceived(player.Name, message));
         }
 
         public List<string> GetPlayerList(string playertoken)
@@ -35,15 +35,40 @@ namespace MemoryGame.Server
             return _players.GetPlayerNames();
         }
 
+        public void ReadyToRumble(string playertoken)
+        {
+            _game.PlayerIsReady(playertoken);
+        }
+
         public void StartGame(string playertokenFrom, int rows, int columns)
         {
             //create a roundrobin collection of the players
             var players = _players.GetPlayersRoundRobin();
-            _game = new GameCore(players);
-            //todo: send to players that the game is started
-            _players.Send(playertokenFrom, (player, callback) => callback.OnGameStarted(rows, columns));
+            _game = new GameCore(players, rows, columns);
+
+            _game.TurnChanged += TurnChanged;
+
+            _players.Send(callback => callback.OnGameStarted(rows, columns));
+
+            //_game.Start();
 
             //todo: send to starting player that it's his/her turn
+        }
+
+        private void TurnChanged(string playertoken)
+        {
+            _players.Send(playertoken, (player, callback) => callback.OnPlayerIsOnTurn(player.Name));
+            _players.SendTo(playertoken, callback => callback.OnYourTurn());
+        }
+
+        public void CardClicked(string playertoken, int row, int column)
+        {
+            _game.CardClicked(playertoken, row, column);
+
+            //todo: send result of cardclicked to players
+            //could be: - show card c (x,y) being resource nr z
+            //          - remove card 1 (x1,y1), 2 (x2,y2)
+            //          - cover card 1 (x1,y1), 2 (x2,y2)
         }
     }
 }

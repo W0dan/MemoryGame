@@ -34,11 +34,11 @@ namespace MemoryGame.Server
             }
         }
 
-        public void Send(string playerTokenFrom, Action<string, TSubscriberCallback> action)
+        public void Send(string playerToken, Action<Subscriber<TSubscriberCallback>, TSubscriberCallback> action)
         {
             Task.Factory.StartNew(() =>
             {
-                var subscriberFrom = _subscribers.Single(s => s.Token == playerTokenFrom);
+                var selectedSubscriber = _subscribers.Single(s => s.Token == playerToken);
 
                 var subscribersToRemove = new List<Subscriber<TSubscriberCallback>>();
 
@@ -46,7 +46,7 @@ namespace MemoryGame.Server
                 {
                     try
                     {
-                        action(subscriberFrom.Name, subscriber.Callback);
+                        action(selectedSubscriber, subscriber.Callback);
                     }
                     catch
                     {
@@ -55,6 +55,52 @@ namespace MemoryGame.Server
                 }
 
                 foreach (var subscriber in subscribersToRemove)
+                {
+                    _subscribers.Remove(subscriber);
+                }
+            });
+        }
+
+        public void Send(Action<TSubscriberCallback> action)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                var subscribersToRemove = new List<Subscriber<TSubscriberCallback>>();
+
+                foreach (var subscriber in _subscribers)
+                {
+                    try
+                    {
+                        action(subscriber.Callback);
+                    }
+                    catch
+                    {
+                        subscribersToRemove.Add(subscriber);
+                    }
+                }
+
+                foreach (var subscriber in subscribersToRemove)
+                {
+                    _subscribers.Remove(subscriber);
+                }
+            });
+        }
+
+        public void SendTo(string playertoken, Action<TSubscriberCallback> action)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                var subscriber = _subscribers.SingleOrDefault(sub => sub.Token == playertoken);
+                if (subscriber == null)
+                {
+                    return;
+                }
+
+                try
+                {
+                    action(subscriber.Callback);
+                }
+                catch
                 {
                     _subscribers.Remove(subscriber);
                 }

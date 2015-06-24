@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600" Background="LemonChiffon">
-    <Grid>
+    <Grid Name="LayoutGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Name="PlayersStackpanel"></StackPanel>
-        <StackPanel Grid.Row="1" Name="CardsStackpanel"></StackPanel>
+
     </Grid>
 </UserControl>

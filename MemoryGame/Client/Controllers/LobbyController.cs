@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using MemoryGame.Client.Navigation;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
@@ -73,7 +72,6 @@ namespace MemoryGame.Client.Controllers
                 _view.CancelButtonClicked += LeaveGame;
             }
 
-
             return _view;
         }
 
@@ -82,15 +80,42 @@ namespace MemoryGame.Client.Controllers
             _navigator.NavigateTo(() => _gameController.Index(rows, columns));
         }
 
-        private void StartGame(int rows, int columns)
+        private void StartGame(int numberOfCardsLevel)
         {
             //todo: send a message to server to stop accepting new players
             //todo: and also to stop accepting chat messages
-            //todo: and to start an instance of the game core
+
+            var rows = 0;
+            var columns = 0;
+            
+            //create a pretty screen layout (on wide screen monitors, that is)
+            //should this be in the core ?
+            switch (numberOfCardsLevel)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    rows = numberOfCardsLevel + 1;
+                    columns = numberOfCardsLevel + 2;
+                    break;
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    rows = numberOfCardsLevel;
+                    columns = numberOfCardsLevel + 2;
+                    break;
+                case 8:
+                    rows = 7;
+                    columns = 10;
+                    break;
+                case 9:
+                    rows = 8;
+                    columns = 9;
+                    break;
+            }
 
             _playerContext.StartGame(rows, columns);
-
-            //_navigator.NavigateTo(() => _gameController.Index(rows, columns));
         }
 
         private void LeaveGame()
@@ -105,13 +130,6 @@ namespace MemoryGame.Client.Controllers
             _host.Stop();
 
             _navigator.NavigateFromHistory();
-        }
-
-        private void TextEnteredInChatbox(string text)
-        {
-            _playerContext.SendChatMessage(text);
-
-            _view.ChatTextbox.Text = "";
         }
     }
 }
