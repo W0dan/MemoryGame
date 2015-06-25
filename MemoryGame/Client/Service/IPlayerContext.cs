@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MemoryGame.Contracts;
 
 namespace MemoryGame.Client.Service
 {
@@ -8,8 +9,13 @@ namespace MemoryGame.Client.Service
         event Action<string> PlayerJoined;
         event Action<string, string> ChatMessageReceived;
         event Action<int, int> GameStarted;
+
         event Action YourTurn;
         event Action<string> PlayerIsOnTurn;
+        event Action<SelectedCard> FirstCardSelected;
+        event Action<SelectedCard> SecondCardSelected;
+        event Action<SelectedCard, SelectedCard> SecondCardMatches;
+        event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
 
         void SetJoinParameters(string host, string port, string playerName);
         void Join();

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using MemoryGame.Contracts;
+using MemoryGame.Server.Core;
 
 namespace MemoryGame.Server
 {
@@ -47,12 +48,12 @@ namespace MemoryGame.Server
             _game = new GameCore(players, rows, columns);
 
             _game.TurnChanged += TurnChanged;
+            _game.FirstCardSelected += FirstCardSelected;
+            _game.SecondCardSelected += SecondCardSelected;
+            _game.SecondCardMatches += SecondCardMatches;
+            _game.SecondCardDoesntMatch += SecondCardDoesntMatch;
 
             _players.Send(callback => callback.OnGameStarted(rows, columns));
-
-            //_game.Start();
-
-            //todo: send to starting player that it's his/her turn
         }
 
         private void TurnChanged(string playertoken)
@@ -63,12 +64,27 @@ namespace MemoryGame.Server
 
         public void CardClicked(string playertoken, int row, int column)
         {
-            _game.CardClicked(playertoken, row, column);
+            _game.CardSelected(playertoken, row, column);
+        }
 
-            //todo: send result of cardclicked to players
-            //could be: - show card c (x,y) being resource nr z
-            //          - remove card 1 (x1,y1), 2 (x2,y2)
-            //          - cover card 1 (x1,y1), 2 (x2,y2)
+        private void FirstCardSelected(SelectedCard card)
+        {
+            _players.Send(callback => callback.OnFirstCardSelected(card));
+        }
+
+        private void SecondCardSelected(SelectedCard card)
+        {
+            _players.Send(callback => callback.OnSecondCardSelected(card));
+        }
+
+        private void SecondCardMatches(SelectedCard firstCard, SelectedCard secondCard)
+        {
+            _players.Send(callback => callback.OnSecondCardMatches(firstCard, secondCard));
+        }
+
+        private void SecondCardDoesntMatch(SelectedCard firstCard, SelectedCard secondCard)
+        {
+            _players.Send(callback => callback.OnSecondCardDoesntMatch(firstCard, secondCard));
         }
     }
 }

@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,7 +80,11 @@
     <Compile Include="Client\Resources\ResourceHelper.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
-    <Compile Include="Server\GameCore.cs" />
+    <Compile Include="Contracts\SelectedCard.cs" />
+    <Compile Include="Server\Core\Card.cs" />
+    <Compile Include="Server\Core\CardsShuffler.cs" />
+    <Compile Include="Server\Core\CardsFactory.cs" />
+    <Compile Include="Server\Core\GameCore.cs" />
     <Compile Include="Client\Service\IMultiplayerProxy.cs" />
     <Compile Include="Client\Service\IPlayerContext.cs" />
     <Compile Include="Client\Service\PlayerContext.cs" />

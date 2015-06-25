@@ -11,8 +11,13 @@ namespace MemoryGame.Client.Service
         public event Action<string, string> ChatMessageReceived;
         public event Action<string> PlayerJoined;
         public event Action<int, int> GameStarted;
+
         public event Action YourTurn;
         public event Action<string> PlayerIsOnTurn;
+        public event Action<SelectedCard> FirstCardSelected;
+        public event Action<SelectedCard> SecondCardSelected;
+        public event Action<SelectedCard, SelectedCard> SecondCardMatches;
+        public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
 
         private readonly ChannelFactory<IMultiplayerService> _factory;
 
@@ -23,8 +28,13 @@ namespace MemoryGame.Client.Service
             callbackService.ChatMessageReceived += (player, message) => ChatMessageReceived.Raise(player, message);
             callbackService.PlayerJoined += player => PlayerJoined.Raise(player);
             callbackService.GameStarted += (rows, columns) => GameStarted.Raise(rows, columns);
+            
             callbackService.YourTurn += () => YourTurn.Raise();
             callbackService.PlayerIsOnTurn += player => PlayerIsOnTurn.Raise(player);
+            callbackService.FirstCardSelected += card => FirstCardSelected.Raise(card);
+            callbackService.SecondCardSelected += card => SecondCardSelected.Raise(card);
+            callbackService.SecondCardMatches += (firstCard, secondCard) => SecondCardMatches.Raise(firstCard, secondCard);
+            callbackService.SecondCardDoesntMatch += (firstCard, secondCard) => SecondCardDoesntMatch.Raise(firstCard, secondCard);
 
             var callbackInstance = new InstanceContext(callbackService);
 

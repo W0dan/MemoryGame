@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
+using MemoryGame.Contracts;
 
 namespace MemoryGame.Client.Controllers
 {
@@ -13,6 +15,7 @@ namespace MemoryGame.Client.Controllers
         private readonly IPlayerContext _playerContext;
         private GameControl _view;
         private Grid _cardsGrid;
+        private Dictionary<string, Image> _cardsImages = new Dictionary<string, Image>();
 
         public GameController(IPlayerContext playerContext)
         {
@@ -30,10 +33,79 @@ namespace MemoryGame.Client.Controllers
             _cardsGrid.IsEnabled = false;
 
             _playerContext.YourTurn += MyTurn;
+            _playerContext.PlayerIsOnTurn += PlayerIsOnTurn;
+            _playerContext.FirstCardSelected += FirstCardSelected;
+            _playerContext.SecondCardSelected += SecondCardSelected;
+            _playerContext.SecondCardMatches += SecondCardMatches;
+            _playerContext.SecondCardDoesntMatch += SecondCardDoesntMatch;
 
             _playerContext.ReadyToRumble();
 
             return _view;
+        }
+
+        private void FirstCardSelected(SelectedCard card)
+        {
+            _cardsGrid.Dispatcher.Invoke(() =>
+            {
+                //get image containing this card
+                var cardName = string.Format(CardNameFormat, card.Row, card.Column);
+                var image = _cardsImages[cardName];
+
+                //change the image to the resourceindex
+                var imageResource = Resources.ResourceHelper.GetImage(string.Format("Client/Resources/Images/{0:000}.png", card.ResourceIndex));
+                image.Source = imageResource;
+            });
+        }
+
+        private void SecondCardSelected(SelectedCard card)
+        {
+            _cardsGrid.Dispatcher.Invoke(() =>
+            {
+                FlipCard(card, card.ResourceIndex);
+            });
+        }
+
+        private void FlipCard(SelectedCard card, int resourceIndex)
+        {
+            //get image containing this card
+            var cardName = string.Format(CardNameFormat, card.Row, card.Column);
+            var image = _cardsImages[cardName];
+
+            //change the image to the resourceindex
+            var imageResource = Resources.ResourceHelper.GetImage(string.Format("Client/Resources/Images/{0:000}.png", resourceIndex));
+            image.Source = imageResource;
+        }
+
+        private void SecondCardMatches(SelectedCard firstCard, SelectedCard secondCard)
+        {
+            _cardsGrid.Dispatcher.Invoke(() =>
+            {
+                RemoveCard(firstCard);
+                RemoveCard(secondCard);
+            });
+        }
+
+        private void RemoveCard(SelectedCard card)
+        {
+            var cardName = string.Format(CardNameFormat, card.Row, card.Column);
+            var image = _cardsImages[cardName];
+
+            _cardsGrid.Children.Remove(image);
+        }
+
+        private void SecondCardDoesntMatch(SelectedCard firstCard, SelectedCard secondCard)
+        {
+            _cardsGrid.Dispatcher.Invoke(() =>
+            {
+                FlipCard(firstCard, 0);
+                FlipCard(secondCard, 0);
+            });
+        }
+
+        private void PlayerIsOnTurn(string player)
+        {
+
         }
 
         private void MyTurn()
@@ -52,17 +124,11 @@ namespace MemoryGame.Client.Controllers
 
             for (var column = 0; column < columns; column++)
             {
-                cardsGrid.ColumnDefinitions.Add(new ColumnDefinition
-                {
-                    Name = "cd_" + column
-                });
+                cardsGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
             for (var row = 0; row < rows; row++)
             {
-                cardsGrid.RowDefinitions.Add(new RowDefinition
-                {
-                    Name = "rd_" + row
-                });
+                cardsGrid.RowDefinitions.Add(new RowDefinition());
             }
             return cardsGrid;
         }
@@ -75,15 +141,18 @@ namespace MemoryGame.Client.Controllers
                 {
                     var imageResource = Resources.ResourceHelper.GetImage("Client/Resources/Images/000.png");
 
+                    var cardName = string.Format(CardNameFormat, row, column);
                     var image = new Image
                     {
-                        Name = string.Format(CardNameFormat, row, column),
+                        Name = cardName,
                         Source = imageResource,
                         Stretch = Stretch.Uniform,
                         Margin = new Thickness(3),
                     };
 
                     image.MouseUp += CardClicked;
+
+                    _cardsImages.Add(cardName, image);
 
                     cardsGrid.Children.Add(image);
                     Grid.SetRow(image, row);

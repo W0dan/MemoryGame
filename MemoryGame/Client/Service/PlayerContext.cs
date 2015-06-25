@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MemoryGame.Contracts;
 using MemoryGame.Extensions;
 
 namespace MemoryGame.Client.Service
@@ -9,8 +10,13 @@ namespace MemoryGame.Client.Service
         public event Action<string> PlayerJoined;
         public event Action<string, string> ChatMessageReceived;
         public event Action<int, int> GameStarted;
+
         public event Action YourTurn;
         public event Action<string> PlayerIsOnTurn;
+        public event Action<SelectedCard> FirstCardSelected;
+        public event Action<SelectedCard> SecondCardSelected;
+        public event Action<SelectedCard, SelectedCard> SecondCardMatches;
+        public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
 
         private MultiplayerProxy _service;
         private string _playerToken;
@@ -34,8 +40,13 @@ namespace MemoryGame.Client.Service
             _service.ChatMessageReceived += ChatMessageReceived;
             _service.PlayerJoined += PlayerJoined;
             _service.GameStarted += GameStarted;
+
             _service.YourTurn += () => YourTurn.Raise();
             _service.PlayerIsOnTurn += player => PlayerIsOnTurn.Raise(player);
+            _service.FirstCardSelected += card => FirstCardSelected.Raise(card);
+            _service.SecondCardSelected += card => SecondCardSelected.Raise(card);
+            _service.SecondCardMatches += (firstCard, secondCard) => SecondCardMatches.Raise(firstCard, secondCard);
+            _service.SecondCardDoesntMatch += (firstCard, secondCard) => SecondCardDoesntMatch.Raise(firstCard, secondCard);
 
             //todo: display error when join fails with exception
             //todo: display error when join returns null token (meaning playerName allready exists on the server)
