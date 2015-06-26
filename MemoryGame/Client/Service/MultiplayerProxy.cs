@@ -18,6 +18,7 @@ namespace MemoryGame.Client.Service
         public event Action<SelectedCard> SecondCardSelected;
         public event Action<SelectedCard, SelectedCard> SecondCardMatches;
         public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
+        public event Action<string, int> PlayerReceivesPoints;
 
         private readonly ChannelFactory<IMultiplayerService> _factory;
 
@@ -35,6 +36,7 @@ namespace MemoryGame.Client.Service
             callbackService.SecondCardSelected += card => SecondCardSelected.Raise(card);
             callbackService.SecondCardMatches += (firstCard, secondCard) => SecondCardMatches.Raise(firstCard, secondCard);
             callbackService.SecondCardDoesntMatch += (firstCard, secondCard) => SecondCardDoesntMatch.Raise(firstCard, secondCard);
+            callbackService.PlayerReceivesPoints += (player, points) => PlayerReceivesPoints.Raise(player, points);
 
             var callbackInstance = new InstanceContext(callbackService);
 

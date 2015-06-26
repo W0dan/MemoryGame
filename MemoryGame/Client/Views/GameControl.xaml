@@ -8,9 +8,10 @@
     <Grid Name="LayoutGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Name="PlayersStackpanel"></StackPanel>
-
+        <Label Grid.Row="0" Name="PlayerLabel" Background="White" FontSize="18" FontWeight="Bold"></Label>
+        <StackPanel Grid.Row="1" Name="PlayersStackpanel" Orientation="Horizontal"></StackPanel>
     </Grid>
 </UserControl>

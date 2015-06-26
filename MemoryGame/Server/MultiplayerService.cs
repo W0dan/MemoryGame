@@ -52,8 +52,14 @@ namespace MemoryGame.Server
             _game.SecondCardSelected += SecondCardSelected;
             _game.SecondCardMatches += SecondCardMatches;
             _game.SecondCardDoesntMatch += SecondCardDoesntMatch;
+            _game.PointsEarned += PointsEarned;
 
             _players.Send(callback => callback.OnGameStarted(rows, columns));
+        }
+
+        private void PointsEarned(string playertoken, int points)
+        {
+            _players.Send(playertoken, (player, callback) => callback.OnPlayerReceivesPoints(player.Name, points));
         }
 
         private void TurnChanged(string playertoken)

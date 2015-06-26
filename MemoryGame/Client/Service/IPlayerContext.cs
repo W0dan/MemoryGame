@@ -16,6 +16,7 @@ namespace MemoryGame.Client.Service
         event Action<SelectedCard> SecondCardSelected;
         event Action<SelectedCard, SelectedCard> SecondCardMatches;
         event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
+        event Action<string, int> PlayerReceivesPoints;
 
         void SetJoinParameters(string host, string port, string playerName);
         void Join();

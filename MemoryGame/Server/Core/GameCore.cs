@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using MemoryGame.Common;
 using MemoryGame.Contracts;
@@ -8,15 +9,18 @@ namespace MemoryGame.Server.Core
 {
     public class GameCore
     {
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         public event Action<string> TurnChanged;
         public event Action<SelectedCard> FirstCardSelected;
         public event Action<SelectedCard> SecondCardSelected;
         public event Action<SelectedCard, SelectedCard> SecondCardMatches;
         public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
+        public event Action<string, int> PointsEarned;
 
         private readonly RoundRobin<string> _players;
+        private readonly Dictionary<string, int> _points = new Dictionary<string, int>();
+
         private string _currentPlayer;
         private int _playersReady;
 
@@ -86,16 +90,55 @@ namespace MemoryGame.Server.Core
             //wait 3 seconds before removing/resetting cards
             Thread.Sleep(3000);
 
-            DetermineMatch(row, column, firstCardSelected, secondCardSelected);
+            var firstCardDetails = GetFirstCardDetails();
+            var secondCardDetails = GetSecondCardDetails(row, column);
+
+            if (IsMatch(firstCardSelected, secondCardSelected))
+            {
+                SecondCardMatches.Raise(firstCardDetails, secondCardDetails);
+                AddPoint(playertoken);
+                PointsEarned.Raise(playertoken, _points[playertoken]);
+            }
+            else
+            {
+                SecondCardDoesntMatch.Raise(firstCardDetails, secondCardDetails);
+                NextTurn();
+            }
 
             _isFirstCardSelected = false;
-
-            NextTurn();
-
+            
             _cardSelectedIsBusy = false;
         }
 
-        private void DetermineMatch(int row, int column, Card firstCardSelected, Card secondCardSelected)
+        private void AddPoint(string playertoken)
+        {
+            if (!_points.ContainsKey(playertoken))
+            {
+                _points.Add(playertoken, 1);
+            }
+            else
+            {
+                _points[playertoken]++;
+            }
+        }
+
+        private static bool IsMatch(Card firstCardSelected, Card secondCardSelected)
+        {
+            return firstCardSelected.Number == secondCardSelected.Number;
+        }
+
+        private SelectedCard GetSecondCardDetails(int row, int column)
+        {
+            var secondCard = new SelectedCard
+            {
+                Row = row,
+                Column = column,
+                ResourceIndex = _cards[column, row].Number
+            };
+            return secondCard;
+        }
+
+        private SelectedCard GetFirstCardDetails()
         {
             var firstCard = new SelectedCard
             {
@@ -103,24 +146,7 @@ namespace MemoryGame.Server.Core
                 Column = _firstCardSelectedColumn,
                 ResourceIndex = _cards[_firstCardSelectedColumn, _firstCardSelectedRow].Number
             };
-
-            var secondCard = new SelectedCard
-            {
-                Row = row,
-                Column = column,
-                ResourceIndex = _cards[column, row].Number
-            };
-
-            if (firstCardSelected.Number == secondCardSelected.Number)
-            {
-                //match
-                SecondCardMatches.Raise(firstCard, secondCard);
-            }
-            else
-            {
-                //no match
-                SecondCardDoesntMatch.Raise(firstCard, secondCard);
-            }
+            return firstCard;
         }
 
         private Card SelectSecondCard(int row, int column)

@@ -14,8 +14,8 @@ namespace MemoryGame.Server.Core
             for (var i = 0; i < (width * height * shuffleSeed); i++)
             {
                 var x1 = rnd.Next(width - 1);
-                var x2 = rnd.Next(width - 1);
                 var y1 = rnd.Next(height - 1);
+                var x2 = rnd.Next(width - 1);
                 var y2 = rnd.Next(height - 1);
 
                 Swap(cards, x1, y1, x2, y2);

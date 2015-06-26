@@ -12,10 +12,13 @@ namespace MemoryGame.Client.Controllers
     public class GameController : IGameController
     {
         private const string CardNameFormat = "card_{0}_{1}";
+
         private readonly IPlayerContext _playerContext;
         private GameControl _view;
         private Grid _cardsGrid;
-        private Dictionary<string, Image> _cardsImages = new Dictionary<string, Image>();
+
+        private readonly Dictionary<string, Image> _cardsImages = new Dictionary<string, Image>();
+        private readonly Dictionary<string, Label> _playersLabels = new Dictionary<string, Label>();
 
         public GameController(IPlayerContext playerContext)
         {
@@ -38,10 +41,42 @@ namespace MemoryGame.Client.Controllers
             _playerContext.SecondCardSelected += SecondCardSelected;
             _playerContext.SecondCardMatches += SecondCardMatches;
             _playerContext.SecondCardDoesntMatch += SecondCardDoesntMatch;
+            _playerContext.PlayerReceivesPoints += PlayerReceivesPoints;
+
+            _view.PlayerLabel.Content = _playerContext.PlayerName;
+
+            LoadPlayers();
 
             _playerContext.ReadyToRumble();
 
             return _view;
+        }
+
+        private void PlayerReceivesPoints(string player, int points)
+        {
+            var label = _playersLabels[player];
+            label.Dispatcher.Invoke(() =>
+            {
+                label.Content = string.Format("{0} [ {1} ]", player, points);
+            });
+        }
+
+        private void LoadPlayers()
+        {
+            var players = _playerContext.GetPlayerList();
+            foreach (var player in players)
+            {
+                var label = new Label
+                {
+                    Name = player,
+                    Content = player,
+                    FontSize = 15,
+                    Margin = new Thickness(5, 2, 5, 2),
+                    Width = 150
+                };
+                _playersLabels.Add(player, label);
+                _view.PlayersStackpanel.Children.Add(label);
+            }
         }
 
         private void FirstCardSelected(SelectedCard card)
@@ -105,7 +140,22 @@ namespace MemoryGame.Client.Controllers
 
         private void PlayerIsOnTurn(string player)
         {
-
+            _view.Dispatcher.Invoke(() =>
+            {
+                foreach (var playersLabel in _playersLabels)
+                {
+                    if (playersLabel.Key == player)
+                    {
+                        playersLabel.Value.FontSize = 20;
+                        playersLabel.Value.FontWeight = FontWeights.Bold;
+                    }
+                    else
+                    {
+                        playersLabel.Value.FontSize = 15;
+                        playersLabel.Value.FontWeight = FontWeights.Normal;
+                    }
+                }
+            });
         }
 
         private void MyTurn()
@@ -120,7 +170,7 @@ namespace MemoryGame.Client.Controllers
         {
             var cardsGrid = new Grid();
             _view.LayoutGrid.Children.Add(cardsGrid);
-            Grid.SetRow(cardsGrid, 1);
+            Grid.SetRow(cardsGrid, 2);
 
             for (var column = 0; column < columns; column++)
             {
@@ -133,7 +183,7 @@ namespace MemoryGame.Client.Controllers
             return cardsGrid;
         }
 
-        private void DrawCardsBacksides(int rows, int columns, Grid cardsGrid)
+        private void DrawCardsBacksides(int rows, int columns, Panel cardsGrid)
         {
             for (var row = 0; row < rows; row++)
             {

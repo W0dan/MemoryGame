@@ -30,5 +30,8 @@ namespace MemoryGame.Contracts
 
         [OperationContract(IsOneWay = true)]
         void OnSecondCardDoesntMatch(SelectedCard firstCard, SelectedCard secondCard);
+        
+        [OperationContract(IsOneWay = true)]
+        void OnPlayerReceivesPoints(string player, int points);
     }
 }

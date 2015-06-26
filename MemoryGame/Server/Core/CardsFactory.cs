@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace MemoryGame.Server.Core
@@ -10,6 +11,8 @@ namespace MemoryGame.Server.Core
 
             var cards = CreateListOfCards(nrOfCards);
 
+            cards = Shuffle(cards);
+
             return ConvertTo2Dimensions(width, height, cards);
         }
 
@@ -19,11 +22,32 @@ namespace MemoryGame.Server.Core
 
             for (var i = 0; i < cards.Length; i += 2)
             {
-                cards[i] = new Card(i + 1);
-                cards[i + 1] = new Card(i + 1);
+                cards[i] = new Card(i / 2 + 1);
+                cards[i + 1] = new Card(i / 2 + 1);
             }
 
             return cards;
+        }
+
+        private static Card[] Shuffle(Card[] cards)
+        {
+            var rnd = new Random((int)DateTime.Now.Ticks);
+
+            for (var i = 0; i < cards.Length; i++)
+            {
+                var randomIndex = rnd.Next(cards.Length - 1);
+
+                Swap(cards, i, randomIndex);
+            }
+
+            return cards;
+        }
+
+        private static void Swap(IList<Card> cards, int index1, int index2)
+        {
+            var tmp = cards[index1];
+            cards[index1] = cards[index2];
+            cards[index2] = tmp;
         }
 
         private static Card[,] ConvertTo2Dimensions(int width, int height, IReadOnlyList<Card> cards)

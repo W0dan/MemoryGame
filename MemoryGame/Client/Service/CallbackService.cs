@@ -11,13 +11,14 @@ namespace MemoryGame.Client.Service
         public event Action<string, string> ChatMessageReceived;
         public event Action<string> PlayerJoined;
         public event Action<int, int> GameStarted;
+
         public event Action YourTurn;
         public event Action<string> PlayerIsOnTurn;
-
         public event Action<SelectedCard> FirstCardSelected;
         public event Action<SelectedCard> SecondCardSelected;
         public event Action<SelectedCard, SelectedCard> SecondCardMatches;
         public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
+        public event Action<string, int> PlayerReceivesPoints;
 
         public void OnChatMessageReceived(string player, string message)
         {
@@ -62,6 +63,11 @@ namespace MemoryGame.Client.Service
         public void OnSecondCardDoesntMatch(SelectedCard firstCard, SelectedCard secondCard)
         {
             SecondCardDoesntMatch.Raise(firstCard, secondCard);
+        }
+
+        public void OnPlayerReceivesPoints(string player, int points)
+        {
+            PlayerReceivesPoints.Raise(player, points);
         }
     }
 }
