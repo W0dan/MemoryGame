@@ -72,6 +72,8 @@ namespace MemoryGame.Client.Controllers
                 _view.CancelButtonClicked += LeaveGame;
             }
 
+            _view.TextEnteredInChatbox += TextEnteredInChatbox;
+
             return _view;
         }
 
@@ -130,6 +132,13 @@ namespace MemoryGame.Client.Controllers
             _host.Stop();
 
             _navigator.NavigateFromHistory();
+        }
+
+        private void TextEnteredInChatbox(string text)
+        {
+            _playerContext.SendChatMessage(text);
+
+            _view.ChatTextbox.Text = "";
         }
     }
 }

@@ -8,6 +8,8 @@ namespace MemoryGame.Server.Core
 {
     public class GameCore
     {
+        private object _lock = new object();
+
         public event Action<string> TurnChanged;
         public event Action<SelectedCard> FirstCardSelected;
         public event Action<SelectedCard> SecondCardSelected;
@@ -22,6 +24,8 @@ namespace MemoryGame.Server.Core
         private int _firstCardSelectedRow;
         private int _firstCardSelectedColumn;
         private bool _isFirstCardSelected;
+
+        private bool _cardSelectedIsBusy = false;
 
         public GameCore(RoundRobin<string> players, int rows, int columns)
         {
@@ -38,12 +42,25 @@ namespace MemoryGame.Server.Core
 
         private void NextTurn()
         {
+            _firstCardSelectedRow = 0;
+            _firstCardSelectedColumn = 0;
+
             _currentPlayer = _players.GetNext();
             TurnChanged.Raise(_currentPlayer);
         }
 
+        //todo: this method needs some real testing !!!
         public void CardSelected(string playertoken, int row, int column)
         {
+            lock (_lock)
+            {
+                if (_cardSelectedIsBusy)
+                {
+                    return;
+                }
+                _cardSelectedIsBusy = true;
+            }
+
             //only current player can select a card
             if (playertoken != _currentPlayer)
             {
@@ -53,9 +70,16 @@ namespace MemoryGame.Server.Core
             if (!_isFirstCardSelected)
             {
                 SelectFirstCard(row, column);
+                _cardSelectedIsBusy = false;
                 return;
             }
-            
+
+            if (_firstCardSelectedRow == row && _firstCardSelectedColumn == column)
+            {
+                _cardSelectedIsBusy = false;
+                return;
+            }
+
             var firstCardSelected = _cards[_firstCardSelectedColumn, _firstCardSelectedRow];
             var secondCardSelected = SelectSecondCard(row, column);
 
@@ -67,6 +91,8 @@ namespace MemoryGame.Server.Core
             _isFirstCardSelected = false;
 
             NextTurn();
+
+            _cardSelectedIsBusy = false;
         }
 
         private void DetermineMatch(int row, int column, Card firstCardSelected, Card secondCardSelected)
