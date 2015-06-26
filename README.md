@@ -6,4 +6,4 @@ If anyone is interested to take a look at the code, feel free to do so and pleas
 
 Right now I have a first playable version ! (no scores however and also not very stable: no input validation)
 
-[Download](Executable/MemoryGame.exe?Raw=true)
+[Download](Executable/MemoryGame.exe?raw=true)
