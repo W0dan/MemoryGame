@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_a_CardsFactory_is_asked_to_create_cards.cs" />
-    <Compile Include="When_cards_are_shuffled.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

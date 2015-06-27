@@ -35,8 +35,7 @@ namespace MemoryGame.Server.Core
         {
             _players = players;
 
-            var cards = CardsFactory.Create(columns, rows);
-            _cards = CardsShuffler.Shuffle(cards, 2);
+            _cards = CardsFactory.Create(columns, rows);
         }
 
         public void Start()
@@ -56,6 +55,12 @@ namespace MemoryGame.Server.Core
         //todo: this method needs some real testing !!!
         public void CardSelected(string playertoken, int row, int column)
         {
+            //only current player can select a card
+            if (playertoken != _currentPlayer)
+            {
+                return;
+            }
+
             lock (_lock)
             {
                 if (_cardSelectedIsBusy)
@@ -63,12 +68,6 @@ namespace MemoryGame.Server.Core
                     return;
                 }
                 _cardSelectedIsBusy = true;
-            }
-
-            //only current player can select a card
-            if (playertoken != _currentPlayer)
-            {
-                return;
             }
 
             if (!_isFirstCardSelected)
