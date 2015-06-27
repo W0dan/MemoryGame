@@ -33,5 +33,8 @@ namespace MemoryGame.Contracts
         
         [OperationContract(IsOneWay = true)]
         void OnPlayerReceivesPoints(string player, int points);
+
+        [OperationContract(IsOneWay = true)]
+        void OnGameEnd(string victoriousPlayer);
     }
 }

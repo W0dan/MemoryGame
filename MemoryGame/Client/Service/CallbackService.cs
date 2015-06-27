@@ -19,6 +19,7 @@ namespace MemoryGame.Client.Service
         public event Action<SelectedCard, SelectedCard> SecondCardMatches;
         public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
         public event Action<string, int> PlayerReceivesPoints;
+        public event Action<string> GameEnd;
 
         public void OnChatMessageReceived(string player, string message)
         {
@@ -68,6 +69,11 @@ namespace MemoryGame.Client.Service
         public void OnPlayerReceivesPoints(string player, int points)
         {
             PlayerReceivesPoints.Raise(player, points);
+        }
+
+        public void OnGameEnd(string victoriousPlayer)
+        {
+            GameEnd.Raise(victoriousPlayer);
         }
     }
 }

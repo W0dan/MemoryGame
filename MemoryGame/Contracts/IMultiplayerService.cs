@@ -19,7 +19,7 @@ namespace MemoryGame.Contracts
         void ReadyToRumble(string playertoken);
 
         [OperationContract(IsOneWay = true)]
-        void StartGame(string playertokenFrom, int rows, int columns);
+        void StartGame(string playertokenFrom, string cardSet, int rows, int columns);
 
         [OperationContract(IsOneWay = true)]
         void CardClicked(string playertoken, int row, int column);

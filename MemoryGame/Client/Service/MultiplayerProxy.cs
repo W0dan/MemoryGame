@@ -19,6 +19,7 @@ namespace MemoryGame.Client.Service
         public event Action<SelectedCard, SelectedCard> SecondCardMatches;
         public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
         public event Action<string, int> PlayerReceivesPoints;
+        public event Action<string> GameEnd;
 
         private readonly ChannelFactory<IMultiplayerService> _factory;
 
@@ -37,6 +38,7 @@ namespace MemoryGame.Client.Service
             callbackService.SecondCardMatches += (firstCard, secondCard) => SecondCardMatches.Raise(firstCard, secondCard);
             callbackService.SecondCardDoesntMatch += (firstCard, secondCard) => SecondCardDoesntMatch.Raise(firstCard, secondCard);
             callbackService.PlayerReceivesPoints += (player, points) => PlayerReceivesPoints.Raise(player, points);
+            callbackService.GameEnd += victoriousPlayer => GameEnd.Raise(victoriousPlayer);
 
             var callbackInstance = new InstanceContext(callbackService);
 
@@ -67,9 +69,9 @@ namespace MemoryGame.Client.Service
             Execute(channel => channel.ReadyToRumble(playertoken));
         }
 
-        public void StartGame(string playertokenFrom, int rows, int columns)
+        public void StartGame(string playertokenFrom, string cardSet, int rows, int columns)
         {
-            Execute(channel => channel.StartGame(playertokenFrom, rows, columns));
+            Execute(channel => channel.StartGame(playertokenFrom, cardSet, rows, columns));
         }
 
         public void CardClicked(string playertoken, int row, int column)
@@ -82,17 +84,6 @@ namespace MemoryGame.Client.Service
             var channel = _factory.CreateChannel();
 
             return func(channel);
-
-            //var result = defaultResult;
-
-            //Task.Factory.StartNew(() => result = func(channel));
-
-            //while (EqualityComparer<TResult>.Default.Equals(result, defaultResult))
-            //{
-            //    Thread.Sleep(100);
-            //}
-
-            //return result;
         }
 
         private void Execute(Action<IMultiplayerService> action)
@@ -100,8 +91,6 @@ namespace MemoryGame.Client.Service
             var channel = _factory.CreateChannel();
 
             action(channel);
-
-            //Task.Factory.StartNew(() => action(channel));
         }
     }
 }

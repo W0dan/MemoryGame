@@ -193,7 +193,44 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\cars\001.png" />
+    <Resource Include="Client\Resources\Images\cars\002.png" />
+    <Resource Include="Client\Resources\Images\cars\003.png" />
+    <Resource Include="Client\Resources\Images\cars\004.png" />
+    <Resource Include="Client\Resources\Images\cars\005.png" />
+    <Resource Include="Client\Resources\Images\cars\006.png" />
+    <Resource Include="Client\Resources\Images\cars\007.png" />
+    <Resource Include="Client\Resources\Images\cars\008.png" />
+    <Resource Include="Client\Resources\Images\cars\009.png" />
+    <Resource Include="Client\Resources\Images\cars\010.png" />
+    <Resource Include="Client\Resources\Images\cars\011.png" />
+    <Resource Include="Client\Resources\Images\cars\012.png" />
+    <Resource Include="Client\Resources\Images\cars\013.png" />
+    <Resource Include="Client\Resources\Images\cars\014.png" />
+    <Resource Include="Client\Resources\Images\cars\015.png" />
+    <Resource Include="Client\Resources\Images\cars\016.png" />
+    <Resource Include="Client\Resources\Images\cars\017.png" />
+    <Resource Include="Client\Resources\Images\cars\018.png" />
+    <Resource Include="Client\Resources\Images\cars\019.png" />
+    <Resource Include="Client\Resources\Images\cars\020.png" />
+    <Resource Include="Client\Resources\Images\cars\021.png" />
+    <Resource Include="Client\Resources\Images\cars\022.png" />
+    <Resource Include="Client\Resources\Images\cars\023.png" />
+    <Resource Include="Client\Resources\Images\cars\024.png" />
+    <Resource Include="Client\Resources\Images\cars\025.png" />
+    <Resource Include="Client\Resources\Images\cars\026.png" />
+    <Resource Include="Client\Resources\Images\cars\027.png" />
+    <Resource Include="Client\Resources\Images\cars\028.png" />
+    <Resource Include="Client\Resources\Images\cars\029.png" />
+    <Resource Include="Client\Resources\Images\cars\030.png" />
+    <Resource Include="Client\Resources\Images\cars\031.png" />
+    <Resource Include="Client\Resources\Images\cars\032.png" />
+    <Resource Include="Client\Resources\Images\cars\033.png" />
+    <Resource Include="Client\Resources\Images\cars\034.png" />
+    <Resource Include="Client\Resources\Images\cars\035.png" />
+    <Resource Include="Client\Resources\Images\cars\036.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="memory64b.ico" />
   </ItemGroup>
@@ -201,43 +238,35 @@
     <Resource Include="Client\Resources\Icons\memory64b.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Client\Resources\Images\princess\001.png" />
+    <Resource Include="Client\Resources\Images\princess\002.png" />
+    <Resource Include="Client\Resources\Images\princess\003.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Client\Resources\Images\000.png" />
-    <Resource Include="Client\Resources\Images\001.png" />
-    <Resource Include="Client\Resources\Images\002.png" />
-    <Resource Include="Client\Resources\Images\003.png" />
-    <Resource Include="Client\Resources\Images\004.png" />
-    <Resource Include="Client\Resources\Images\005.png" />
-    <Resource Include="Client\Resources\Images\006.png" />
-    <Resource Include="Client\Resources\Images\007.png" />
-    <Resource Include="Client\Resources\Images\008.png" />
-    <Resource Include="Client\Resources\Images\009.png" />
-    <Resource Include="Client\Resources\Images\010.png" />
-    <Resource Include="Client\Resources\Images\011.png" />
-    <Resource Include="Client\Resources\Images\012.png" />
-    <Resource Include="Client\Resources\Images\013.png" />
-    <Resource Include="Client\Resources\Images\014.png" />
-    <Resource Include="Client\Resources\Images\015.png" />
-    <Resource Include="Client\Resources\Images\016.png" />
-    <Resource Include="Client\Resources\Images\017.png" />
-    <Resource Include="Client\Resources\Images\018.png" />
-    <Resource Include="Client\Resources\Images\019.png" />
-    <Resource Include="Client\Resources\Images\020.png" />
-    <Resource Include="Client\Resources\Images\021.png" />
-    <Resource Include="Client\Resources\Images\022.png" />
-    <Resource Include="Client\Resources\Images\023.png" />
-    <Resource Include="Client\Resources\Images\024.png" />
-    <Resource Include="Client\Resources\Images\025.png" />
-    <Resource Include="Client\Resources\Images\026.png" />
-    <Resource Include="Client\Resources\Images\027.png" />
-    <Resource Include="Client\Resources\Images\028.png" />
-    <Resource Include="Client\Resources\Images\029.png" />
-    <Resource Include="Client\Resources\Images\030.png" />
-    <Resource Include="Client\Resources\Images\031.png" />
-    <Resource Include="Client\Resources\Images\032.png" />
-    <Resource Include="Client\Resources\Images\033.png" />
-    <Resource Include="Client\Resources\Images\034.png" />
-    <Resource Include="Client\Resources\Images\035.png" />
-    <Resource Include="Client\Resources\Images\036.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\princess\000.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\cars\000.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\princess\004.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\Defeat.jpg" />
+    <Resource Include="Client\Resources\Images\victory-02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\princess\005.png" />
+    <Resource Include="Client\Resources\Images\princess\006.png" />
+    <Resource Include="Client\Resources\Images\princess\007.png" />
+    <Resource Include="Client\Resources\Images\princess\008.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\Images\princess\009.png" />
+    <Resource Include="Client\Resources\Images\princess\010.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using MemoryGame.Contracts;
 using MemoryGame.Extensions;
 
@@ -18,6 +19,8 @@ namespace MemoryGame.Client.Service
         public event Action<SelectedCard, SelectedCard> SecondCardMatches;
         public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
         public event Action<string, int> PlayerReceivesPoints;
+        public event Action Victory;
+        public event Action Defeat;
 
         private MultiplayerProxy _service;
         private string _playerToken;
@@ -49,10 +52,23 @@ namespace MemoryGame.Client.Service
             _service.SecondCardMatches += (firstCard, secondCard) => SecondCardMatches.Raise(firstCard, secondCard);
             _service.SecondCardDoesntMatch += (firstCard, secondCard) => SecondCardDoesntMatch.Raise(firstCard, secondCard);
             _service.PlayerReceivesPoints += (player, points) => PlayerReceivesPoints.Raise(player, points);
+            _service.GameEnd += GameEnded;
 
             //todo: display error when join fails with exception
             //todo: display error when join returns null token (meaning playerName allready exists on the server)
             _playerToken = _service.Join(PlayerName);
+        }
+
+        private void GameEnded(string victoriousPlayer)
+        {
+            if (PlayerName == victoriousPlayer)
+            {
+                Victory.Raise();
+            }
+            else
+            {
+                Defeat.Raise();
+            }
         }
 
         public void SendChatMessage(string text)
@@ -70,9 +86,9 @@ namespace MemoryGame.Client.Service
             _service.ReadyToRumble(_playerToken);
         }
 
-        public void StartGame(int rows, int columns)
+        public void StartGame(string cardSet, int rows, int columns)
         {
-            _service.StartGame(_playerToken, rows, columns);
+            _service.StartGame(_playerToken, cardSet, rows, columns);
         }
 
         public void CardClicked(int row, int column)

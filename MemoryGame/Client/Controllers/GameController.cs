@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using MemoryGame.Client.Navigation;
+using MemoryGame.Client.Resources;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
 using MemoryGame.Contracts;
@@ -13,6 +15,7 @@ namespace MemoryGame.Client.Controllers
     {
         private const string CardNameFormat = "card_{0}_{1}";
 
+        private readonly INavigator _navigator;
         private readonly IPlayerContext _playerContext;
         private GameControl _view;
         private Grid _cardsGrid;
@@ -20,8 +23,9 @@ namespace MemoryGame.Client.Controllers
         private readonly Dictionary<string, Image> _cardsImages = new Dictionary<string, Image>();
         private readonly Dictionary<string, Label> _playersLabels = new Dictionary<string, Label>();
 
-        public GameController(IPlayerContext playerContext)
+        public GameController(INavigator navigator, IPlayerContext playerContext)
         {
+            _navigator = navigator;
             _playerContext = playerContext;
         }
 
@@ -42,6 +46,8 @@ namespace MemoryGame.Client.Controllers
             _playerContext.SecondCardMatches += SecondCardMatches;
             _playerContext.SecondCardDoesntMatch += SecondCardDoesntMatch;
             _playerContext.PlayerReceivesPoints += PlayerReceivesPoints;
+            _playerContext.Victory += Victory;
+            _playerContext.Defeat += Defeat;
 
             _view.PlayerLabel.Content = _playerContext.PlayerName;
 
@@ -50,6 +56,35 @@ namespace MemoryGame.Client.Controllers
             _playerContext.ReadyToRumble();
 
             return _view;
+        }
+
+        private void Defeat()
+        {
+            ShowOutcome("Defeat.jpg");
+        }
+
+        private void Victory()
+        {
+            ShowOutcome("victory-02.jpg");
+        }
+
+        private void ShowOutcome(string outcome)
+        {
+            _view.OutCome.Dispatcher.Invoke(() =>
+            {
+                var imageName = ResourceHelper.ImageResourceRoot + outcome;
+                var imageSource = ResourceHelper.GetImage(imageName);
+
+                _view.OutCome.MouseUp += OutcomeClicked;
+
+                _view.OutCome.Visibility = Visibility.Visible;
+                _view.OutCome.Source = imageSource;
+            });
+        }
+
+        private void OutcomeClicked(object sender, MouseButtonEventArgs e)
+        {
+            _navigator.NavigateFromHistory();
         }
 
         private void PlayerReceivesPoints(string player, int points)
@@ -83,13 +118,7 @@ namespace MemoryGame.Client.Controllers
         {
             _cardsGrid.Dispatcher.Invoke(() =>
             {
-                //get image containing this card
-                var cardName = string.Format(CardNameFormat, card.Row, card.Column);
-                var image = _cardsImages[cardName];
-
-                //change the image to the resourceindex
-                var imageResource = Resources.ResourceHelper.GetImage(string.Format("Client/Resources/Images/{0:000}.png", card.ResourceIndex));
-                image.Source = imageResource;
+                FlipCard(card, card.ResourceIndex);
             });
         }
 
@@ -108,7 +137,7 @@ namespace MemoryGame.Client.Controllers
             var image = _cardsImages[cardName];
 
             //change the image to the resourceindex
-            var imageResource = Resources.ResourceHelper.GetImage(string.Format("Client/Resources/Images/{0:000}.png", resourceIndex));
+            var imageResource = ResourceHelper.GetImageRelative(card.ResourceSet, string.Format("{0:000}.png", resourceIndex));
             image.Source = imageResource;
         }
 
@@ -189,7 +218,7 @@ namespace MemoryGame.Client.Controllers
             {
                 for (var column = 0; column < columns; column++)
                 {
-                    var imageResource = Resources.ResourceHelper.GetImage("Client/Resources/Images/000.png");
+                    var imageResource = ResourceHelper.GetImage("Client/Resources/Images/000.png");
 
                     var cardName = string.Format(CardNameFormat, row, column);
                     var image = new Image

@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using MemoryGame.Client.Navigation;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
@@ -16,6 +19,8 @@ namespace MemoryGame.Client.Controllers
         private readonly IPlayerContext _playerContext;
         private readonly IGameController _gameController;
         private LobbyControl _view;
+        private string _selectedCardSet = "cars";
+        readonly Dictionary<string, Border> _cardSetImages = new Dictionary<string, Border>();
 
         public LobbyController(INavigator navigator, IHost host, IPlayerContext playerContext, IGameController gameController)
         {
@@ -29,13 +34,13 @@ namespace MemoryGame.Client.Controllers
         {
             _view.PlayersStackpanel.Dispatcher.Invoke(() =>
             {
-            var playerList = _playerContext.GetPlayerList();
+                var playerList = _playerContext.GetPlayerList();
 
-            _view.PlayersStackpanel.Children.Clear();
-            foreach (var p in playerList)
-            {
-                _view.PlayersStackpanel.Children.Add(new Label { Content = p });
-            }
+                _view.PlayersStackpanel.Children.Clear();
+                foreach (var p in playerList)
+                {
+                    _view.PlayersStackpanel.Children.Add(new Label { Content = p });
+                }
             });
         }
 
@@ -43,13 +48,18 @@ namespace MemoryGame.Client.Controllers
         {
             _view.ChatBox.Dispatcher.Invoke(() =>
             {
-            _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
+                _view.ChatBox.Content += string.Format("{0}> {1}\r\n", player, message);
             });
         }
 
         public UIElement Index(bool isHost)
         {
             Debug.WriteLine(_playerContext.PlayerName + " is on thread " + Thread.CurrentThread.ManagedThreadId);
+
+            if (_view != null)
+            {
+                return _view;
+            }
 
             _view = new LobbyControl();
 
@@ -74,7 +84,60 @@ namespace MemoryGame.Client.Controllers
 
             _view.TextEnteredInChatbox += TextEnteredInChatbox;
 
+            _view.CardsStackpanel.Children.Add(GetImage("cars", "001.png"));
+            _view.CardsStackpanel.Children.Add(GetImage("princess", "003.png"));
+
+            SelectCardSet("cars");
+
             return _view;
+        }
+
+        private void SelectCardSet(string cardSet)
+        {
+            foreach (var cardSetImage in _cardSetImages)
+            {
+                if (cardSetImage.Key == cardSet)
+                {
+                    cardSetImage.Value.BorderThickness = new Thickness(2);
+                    cardSetImage.Value.BorderBrush = Brushes.Black;
+                }
+                else
+                {
+                    cardSetImage.Value.BorderThickness = new Thickness(0);
+                    cardSetImage.Value.BorderBrush = Brushes.White;
+                }
+            }
+        }
+
+        private Border GetImage(string cardset, string imageName)
+        {
+            var imageSource = Resources.ResourceHelper.GetImageRelative(cardset, imageName);
+            var image = new Image
+            {
+                Name = cardset,
+                Source = imageSource,
+                Width = 100,
+                Height = 100
+            };
+
+            image.MouseUp += CardSetClicked;
+
+            var border = new Border
+            {
+                Child = image
+            };
+
+            _cardSetImages.Add(cardset, border);
+
+            return border;
+        }
+
+        private void CardSetClicked(object sender, MouseButtonEventArgs e)
+        {
+            var image = (Image)sender;
+
+            _selectedCardSet = image.Name;
+            SelectCardSet(_selectedCardSet);
         }
 
         private void GameStarted(int rows, int columns)
@@ -89,7 +152,7 @@ namespace MemoryGame.Client.Controllers
 
             var rows = 0;
             var columns = 0;
-            
+
             //create a pretty screen layout (on wide screen monitors, that is)
             //should this be in the core ?
             switch (numberOfCardsLevel)
@@ -97,13 +160,13 @@ namespace MemoryGame.Client.Controllers
                 case 1:
                 case 2:
                 case 3:
+                case 5:
+                case 7:
                     rows = numberOfCardsLevel + 1;
                     columns = numberOfCardsLevel + 2;
                     break;
                 case 4:
-                case 5:
                 case 6:
-                case 7:
                     rows = numberOfCardsLevel;
                     columns = numberOfCardsLevel + 2;
                     break;
@@ -117,7 +180,7 @@ namespace MemoryGame.Client.Controllers
                     break;
             }
 
-            _playerContext.StartGame(rows, columns);
+            _playerContext.StartGame(_selectedCardSet, rows, columns);
         }
 
         private void LeaveGame()

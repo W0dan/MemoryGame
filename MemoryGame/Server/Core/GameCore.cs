@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using MemoryGame.Common;
 using MemoryGame.Contracts;
@@ -17,9 +18,12 @@ namespace MemoryGame.Server.Core
         public event Action<SelectedCard, SelectedCard> SecondCardMatches;
         public event Action<SelectedCard, SelectedCard> SecondCardDoesntMatch;
         public event Action<string, int> PointsEarned;
+        public event Action<string> GameEnd;
 
         private readonly RoundRobin<string> _players;
+        private readonly string _cardSet;
         private readonly Dictionary<string, int> _points = new Dictionary<string, int>();
+        private int _cardsLeft;
 
         private string _currentPlayer;
         private int _playersReady;
@@ -31,10 +35,12 @@ namespace MemoryGame.Server.Core
 
         private bool _cardSelectedIsBusy = false;
 
-        public GameCore(RoundRobin<string> players, int rows, int columns)
+        public GameCore(RoundRobin<string> players, string cardSet, int rows, int columns)
         {
             _players = players;
+            _cardSet = cardSet;
 
+            _cardsLeft = rows * columns;
             _cards = CardsFactory.Create(columns, rows);
         }
 
@@ -97,6 +103,17 @@ namespace MemoryGame.Server.Core
                 SecondCardMatches.Raise(firstCardDetails, secondCardDetails);
                 AddPoint(playertoken);
                 PointsEarned.Raise(playertoken, _points[playertoken]);
+
+                _cardsLeft -= 2;
+
+                if (_cardsLeft <= 0)
+                {
+                    var maxPoints = _points.Max(p => p.Value);
+                    var victoriousPlayers = _points.Where(p => p.Value == maxPoints);
+
+                    var victoriousPlayer = victoriousPlayers.First().Key;
+                    GameEnd.Raise(victoriousPlayer);
+                }
             }
             else
             {
@@ -105,7 +122,7 @@ namespace MemoryGame.Server.Core
             }
 
             _isFirstCardSelected = false;
-            
+
             _cardSelectedIsBusy = false;
         }
 
@@ -128,52 +145,46 @@ namespace MemoryGame.Server.Core
 
         private SelectedCard GetSecondCardDetails(int row, int column)
         {
-            var secondCard = new SelectedCard
-            {
-                Row = row,
-                Column = column,
-                ResourceIndex = _cards[column, row].Number
-            };
-            return secondCard;
+            return SelectCard(row, column);
         }
 
         private SelectedCard GetFirstCardDetails()
         {
-            var firstCard = new SelectedCard
-            {
-                Row = _firstCardSelectedRow,
-                Column = _firstCardSelectedColumn,
-                ResourceIndex = _cards[_firstCardSelectedColumn, _firstCardSelectedRow].Number
-            };
-            return firstCard;
+            return SelectCard(_firstCardSelectedRow, _firstCardSelectedColumn);
         }
 
         private Card SelectSecondCard(int row, int column)
         {
             var secondCardSelected = _cards[column, row];
+            var selectedCard = SelectCard(row, column);
 
-            SecondCardSelected.Raise(new SelectedCard
-            {
-                Row = row,
-                Column = column,
-                ResourceIndex = _cards[column, row].Number
-            });
+            SecondCardSelected.Raise(selectedCard);
+
             return secondCardSelected;
         }
 
         private void SelectFirstCard(int row, int column)
         {
+            _isFirstCardSelected = true;
+
             _firstCardSelectedRow = row;
             _firstCardSelectedColumn = column;
 
-            _isFirstCardSelected = true;
+            var selectedCard = SelectCard(row, column);
 
-            FirstCardSelected.Raise(new SelectedCard
+            FirstCardSelected.Raise(selectedCard);
+        }
+
+        private SelectedCard SelectCard(int row, int column)
+        {
+            var secondCard = new SelectedCard
             {
                 Row = row,
                 Column = column,
-                ResourceIndex = _cards[column, row].Number
-            });
+                ResourceIndex = _cards[column, row].Number,
+                ResourceSet = _cardSet
+            };
+            return secondCard;
         }
 
         public void PlayerIsReady(string playertoken)

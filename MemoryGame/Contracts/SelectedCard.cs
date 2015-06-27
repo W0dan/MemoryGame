@@ -13,5 +13,8 @@ namespace MemoryGame.Contracts
 
         [DataMember]
         public int ResourceIndex { get; set; }
+
+        [DataMember]
+        public string ResourceSet { get; set; }
     }
 }

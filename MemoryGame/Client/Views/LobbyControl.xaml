@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="617" Background="LemonChiffon">
+             d:DesignHeight="400" d:DesignWidth="617" Background="LemonChiffon">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -13,6 +13,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -25,8 +26,11 @@
         <TextBox Name="ChatTextbox" Grid.Row="4" Grid.Column="0" Margin="10,5,5,10" KeyDown="ChatTextboxOnKeyDown"></TextBox>
         <!-- column 2 -->
         <StackPanel Name="PlayersStackpanel" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Background="White" Margin="5,10,10,5" ></StackPanel>
-        <Slider Name="NumberOfCardsSlider" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Minimum="1" Maximum="9" IsSnapToTickEnabled="True" Margin="5,5,10,5" Visibility="Hidden"></Slider>
-        <Button Name="StartButton" Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" Margin="5,5,10,10" FontSize="20" FontWeight="Bold" Visibility="Hidden" Click="StartButtonClick">Start</Button>
-        <Button Name="CancelButton" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,10" FontSize="20" FontWeight="Bold" Click="CancelButtonClick">Leave</Button>
+        <StackPanel Name="CardsStackpanel" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Background="White" Margin="5,5,10,5" Orientation="Horizontal" VerticalAlignment="Top"></StackPanel>
+        <Slider Name="NumberOfCardsSlider" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Minimum="1" Maximum="9" IsSnapToTickEnabled="True" Margin="5,5,10,5" Visibility="Hidden"></Slider>
+        
+        
+        <Button Name="StartButton" Grid.Row="4" Grid.Column="2" Grid.RowSpan="2" Margin="5,5,10,10" FontSize="20" FontWeight="Bold" Visibility="Hidden" Click="StartButtonClick">Start</Button>
+        <Button Name="CancelButton" Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,10" FontSize="20" FontWeight="Bold" Click="CancelButtonClick">Leave</Button>
     </Grid>
 </UserControl>
