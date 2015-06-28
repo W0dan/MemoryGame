@@ -82,7 +82,7 @@
     <Compile Include="Client\Navigation\Navigator.cs" />
     <Compile Include="Contracts\SelectedCard.cs" />
     <Compile Include="Server\Core\Card.cs" />
-    <Compile Include="Server\Core\CardsFactory.cs" />
+    <Compile Include="Server\Core\DeckOfCards.cs" />
     <Compile Include="Server\Core\GameCore.cs" />
     <Compile Include="Client\Service\IMultiplayerProxy.cs" />
     <Compile Include="Client\Service\IPlayerContext.cs" />

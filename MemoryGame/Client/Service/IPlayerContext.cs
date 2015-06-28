@@ -26,7 +26,7 @@ namespace MemoryGame.Client.Service
         List<string> GetPlayerList();
         string PlayerName { get; }
         void ReadyToRumble();
-        void StartGame(string cardSet, int rows, int columns);
+        void StartGame(string cardSet, int numberOfCardsLevel);
         void CardClicked(int row, int column);
     }
 }

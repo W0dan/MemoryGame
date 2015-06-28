@@ -69,9 +69,9 @@ namespace MemoryGame.Client.Service
             Execute(channel => channel.ReadyToRumble(playertoken));
         }
 
-        public void StartGame(string playertokenFrom, string cardSet, int rows, int columns)
+        public void StartGame(string playertokenFrom, string cardSet, int numberOfCardsLevel)
         {
-            Execute(channel => channel.StartGame(playertokenFrom, cardSet, rows, columns));
+            Execute(channel => channel.StartGame(playertokenFrom, cardSet, numberOfCardsLevel));
         }
 
         public void CardClicked(string playertoken, int row, int column)

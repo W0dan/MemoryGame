@@ -12,7 +12,7 @@ namespace MemoryGame.Test
             const int expectedWidth = 5;
             const int expectedHeight = 6;
 
-            var cards = CardsFactory.Create(expectedWidth, expectedHeight);
+            var cards = DeckOfCards.Deal(expectedWidth, expectedHeight);
 
             Assert.Equal(expectedWidth, cards.GetLength(0));
             Assert.Equal(expectedHeight, cards.GetLength(1));
@@ -24,7 +24,7 @@ namespace MemoryGame.Test
             const int width = 5;
             const int height = 6;
 
-            var cards = CardsFactory.Create(width, height);
+            var cards = DeckOfCards.Deal(width, height);
 
             var testResults = new Dictionary<int, int>();
 

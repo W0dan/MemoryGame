@@ -12,6 +12,7 @@ namespace MemoryGame.Server.Core
     {
         private readonly object _lock = new object();
 
+        public event Action<Board> GameStarted;
         public event Action<string> TurnChanged;
         public event Action<SelectedCard> FirstCardSelected;
         public event Action<SelectedCard> SecondCardSelected;
@@ -34,19 +35,19 @@ namespace MemoryGame.Server.Core
         private bool _isFirstCardSelected;
 
         private bool _cardSelectedIsBusy = false;
+        private Board _board;
 
-        public GameCore(RoundRobin<string> players, string cardSet, int rows, int columns)
+        public GameCore(RoundRobin<string> players, string cardSet, int numberOfCardsLevel)
         {
             _players = players;
             _cardSet = cardSet;
 
-            _cardsLeft = rows * columns;
-            _cards = CardsFactory.Create(columns, rows);
-        }
+            _board = DetermineBoardLayout(numberOfCardsLevel);
+            var rows = _board.Rows;
+            var columns = _board.Columns;
 
-        public void Start()
-        {
-            NextTurn();
+            _cardsLeft = rows * columns;
+            _cards = DeckOfCards.Deal(columns, rows);
         }
 
         private void NextTurn()
@@ -192,8 +193,57 @@ namespace MemoryGame.Server.Core
             Interlocked.Increment(ref _playersReady);
             if (_playersReady == _players.Count)
             {
-                Start();
+                NextTurn();
             }
+        }
+
+        public Board DetermineBoardLayout(int numberOfCardsLevel)
+        {
+            var rows=0;
+            var columns=0;
+            switch (numberOfCardsLevel)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 5:
+                case 7:
+                    rows = numberOfCardsLevel + 1;
+                    columns = numberOfCardsLevel + 2;
+                    break;
+                case 4:
+                case 6:
+                    rows = numberOfCardsLevel;
+                    columns = numberOfCardsLevel + 2;
+                    break;
+                case 8:
+                    rows = 7;
+                    columns = 10;
+                    break;
+                case 9:
+                    rows = 8;
+                    columns = 9;
+                    break;
+            }
+
+            return new Board(rows, columns);
+        }
+
+        public void Start()
+        {
+            GameStarted.Raise(_board);
+        }
+    }
+
+    public class Board
+    {
+        public int Rows { get; private set; }
+        public int Columns { get; private set; }
+
+        public Board(int rows, int columns)
+        {
+            Rows = rows;
+            Columns = columns;
         }
     }
 }

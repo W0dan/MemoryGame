@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace MemoryGame.Server.Core
 {
-    public class CardsFactory
+    public class DeckOfCards
     {
-        public static Card[,] Create(int width, int height)
+        public static Card[,] Deal(int width, int height)
         {
             var nrOfCards = width * height;
 

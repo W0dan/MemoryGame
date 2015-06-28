@@ -41,12 +41,13 @@ namespace MemoryGame.Server
             _game.PlayerIsReady(playertoken);
         }
 
-        public void StartGame(string playertokenFrom, string cardSet, int rows, int columns)
+        public void StartGame(string playertokenFrom, string cardSet, int numberOfCardsLevel)
         {
             //create a roundrobin collection of the players
             var players = _players.GetPlayersRoundRobin();
-            _game = new GameCore(players, cardSet, rows, columns);
+            _game = new GameCore(players, cardSet, numberOfCardsLevel);
 
+            _game.GameStarted += GameStarted;
             _game.TurnChanged += TurnChanged;
             _game.FirstCardSelected += FirstCardSelected;
             _game.SecondCardSelected += SecondCardSelected;
@@ -55,7 +56,12 @@ namespace MemoryGame.Server
             _game.PointsEarned += PointsEarned;
             _game.GameEnd += GameEnd;
 
-            _players.Send(callback => callback.OnGameStarted(rows, columns));
+            _game.Start();
+        }
+
+        private void GameStarted(Board board)
+        {
+            _players.Send(callback => callback.OnGameStarted(board.Rows, board.Columns));
         }
 
         private void GameEnd(string playertoken)

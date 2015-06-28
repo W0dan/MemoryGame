@@ -150,37 +150,7 @@ namespace MemoryGame.Client.Controllers
             //todo: send a message to server to stop accepting new players
             //todo: and also to stop accepting chat messages
 
-            var rows = 0;
-            var columns = 0;
-
-            //create a pretty screen layout (on wide screen monitors, that is)
-            //should this be in the core ?
-            switch (numberOfCardsLevel)
-            {
-                case 1:
-                case 2:
-                case 3:
-                case 5:
-                case 7:
-                    rows = numberOfCardsLevel + 1;
-                    columns = numberOfCardsLevel + 2;
-                    break;
-                case 4:
-                case 6:
-                    rows = numberOfCardsLevel;
-                    columns = numberOfCardsLevel + 2;
-                    break;
-                case 8:
-                    rows = 7;
-                    columns = 10;
-                    break;
-                case 9:
-                    rows = 8;
-                    columns = 9;
-                    break;
-            }
-
-            _playerContext.StartGame(_selectedCardSet, rows, columns);
+            _playerContext.StartGame(_selectedCardSet, numberOfCardsLevel);
         }
 
         private void LeaveGame()

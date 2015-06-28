@@ -86,9 +86,9 @@ namespace MemoryGame.Client.Service
             _service.ReadyToRumble(_playerToken);
         }
 
-        public void StartGame(string cardSet, int rows, int columns)
+        public void StartGame(string cardSet, int numberOfCardsLevel)
         {
-            _service.StartGame(_playerToken, cardSet, rows, columns);
+            _service.StartGame(_playerToken, cardSet, numberOfCardsLevel);
         }
 
         public void CardClicked(int row, int column)
