@@ -4,6 +4,6 @@ With this game I'm trying to get a grasp on multiplayer-game development. It is 
 
 If anyone is interested to take a look at the code, feel free to do so and please do not hesitate to give feedback !
 
-Right now I have a first playable version ! (no scores however and also not very stable: no input validation)
+The version you can download with the link below should be pretty stable. Should you encounter any unexpected behaviour (crashes etc.), please let me know.
 
 [Download executable](Executable/MemoryGame.exe?raw=true)
