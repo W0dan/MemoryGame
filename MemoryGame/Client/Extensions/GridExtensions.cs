@@ -10,12 +10,12 @@ namespace MemoryGame.Client.Extensions
         {
             contentControl.Focusable = true;
 
-            layoutGrid.Children.Add(contentControl);
-
             Grid.SetColumn(contentControl, column);
             Grid.SetRow(contentControl, row);
             Grid.SetColumnSpan(contentControl, columnSpan);
             Grid.SetRowSpan(contentControl, rowSpan);
+
+            layoutGrid.Children.Add(contentControl);
 
             FocusManager.SetFocusedElement(layoutGrid, contentControl);
             Keyboard.Focus(contentControl);

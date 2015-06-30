@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using MemoryGame.Client.Extensions;
+using MemoryGame.Client.Views;
 
 namespace MemoryGame.Client.Navigation
 {
@@ -12,6 +15,22 @@ namespace MemoryGame.Client.Navigation
         private static Grid _layoutGrid;
 
         private static readonly Stack<Func<UIElement>> NavigationHistory = new Stack<Func<UIElement>>();
+        private readonly MessageBoxControl _messageBox;
+
+        public Navigator()
+        {
+            _messageBox = new MessageBoxControl();
+
+            _messageBox.OkButton.Click += MessageClicked;
+        }
+
+        private void MessageClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            _layoutGrid.Dispatcher.Invoke(() =>
+            {
+                _layoutGrid.Children.Remove(_messageBox);
+            });
+        }
 
         public void Initialize(Grid layoutGrid)
         {
@@ -33,6 +52,19 @@ namespace MemoryGame.Client.Navigation
             var action = NavigationHistory.Peek();
 
             ActivateAction(action);
+        }
+
+        public void ShowMessage(string title, string message)
+        {
+            _layoutGrid.Dispatcher.Invoke(() =>
+            {
+                _messageBox.TitleLabel.Content = title;
+                _messageBox.ContentLabel.Text = message;
+                _messageBox.Width = 400;
+                _messageBox.Height = 250;
+
+                _layoutGrid.CreateContentControl(_messageBox);
+            });
         }
 
         private static void ActivateAction(Func<UIElement> action)

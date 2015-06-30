@@ -3,8 +3,5 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Memory Game" Height="600" Width="850" WindowStartupLocation="CenterScreen" Icon="/MemoryGame;component/memory64b.ico">
     <Grid Name="LayoutGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Name="ContentRow"></RowDefinition>
-        </Grid.RowDefinitions>
     </Grid>
 </Window>

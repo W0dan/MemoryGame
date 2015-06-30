@@ -61,6 +61,7 @@
     <Compile Include="Client\Controllers\GameController.cs" />
     <Compile Include="Client\Controllers\IGameController.cs" />
     <Compile Include="Client\Controllers\IJoinController.cs" />
+    <Compile Include="Client\Exceptions\InvalidHostException.cs" />
     <Compile Include="Client\Controllers\JoinController.cs" />
     <Compile Include="Client\Controllers\LobbyController.cs" />
     <Compile Include="Client\Controllers\HostmenuController.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Client\Controllers\MasterController.cs" />
     <Compile Include="Client\Controllers\MainmenuController.cs" />
     <Compile Include="Client\Controllers\MultiplayermenuController.cs" />
+    <Compile Include="Client\Exceptions\InvalidPortException.cs" />
     <Compile Include="Client\Extensions\GridExtensions.cs" />
     <Compile Include="Client\Extensions\IIPAddressProvider.cs" />
     <Compile Include="Client\Extensions\IPAddressProvider.cs" />
@@ -80,6 +82,9 @@
     <Compile Include="Client\Resources\ResourceHelper.cs" />
     <Compile Include="Client\Service\CallbackService.cs" />
     <Compile Include="Client\Navigation\Navigator.cs" />
+    <Compile Include="Client\Views\MessageBoxControl.xaml.cs">
+      <DependentUpon>MessageBoxControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contracts\SelectedCard.cs" />
     <Compile Include="Server\Core\Card.cs" />
     <Compile Include="Server\Core\DeckOfCards.cs" />
@@ -107,9 +112,6 @@
     </Compile>
     <Compile Include="Client\Views\MultiplayermenuControl.xaml.cs">
       <DependentUpon>MultiplayermenuControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Client\Views\NavigationControl.xaml.cs">
-      <DependentUpon>NavigationControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\RoundRobin.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
@@ -142,11 +144,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Client\Views\MultiplayermenuControl.xaml">
+    <Page Include="Client\Views\MessageBoxControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Client\Views\NavigationControl.xaml">
+    <Page Include="Client\Views\MultiplayermenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

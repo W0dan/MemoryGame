@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MemoryGame.Client.Exceptions;
 using MemoryGame.Client.Navigation;
 using MemoryGame.Client.Service;
 using MemoryGame.Client.Views;
@@ -30,9 +31,24 @@ namespace MemoryGame.Client.Controllers
 
         private void JoinButtonClicked(string playerName, string ipAddress, string port)
         {
-            _playerContext.SetJoinParameters(ipAddress, port, playerName);
+            try
+            {
+                _playerContext.SetJoinParameters(ipAddress, port, playerName);
 
-            _navigator.NavigateTo(() => _lobbyController.Index(false));
+                _navigator.NavigateTo(() => _lobbyController.Index(false));
+            }
+            catch (InvalidHostException ex)
+            {
+                _navigator.ShowMessage("An error occured", ex.Message);
+            }
+            catch (InvalidPortException ex)
+            {
+                _navigator.ShowMessage("An error occured", ex.Message);
+            }
+            catch
+            {
+                _navigator.ShowMessage("An error occured", "An unexpected exception occured");
+            }
         }
 
         private void BackButtonClicked()

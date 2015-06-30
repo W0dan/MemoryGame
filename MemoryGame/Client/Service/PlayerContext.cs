@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
+using MemoryGame.Client.Exceptions;
 using MemoryGame.Contracts;
 using MemoryGame.Extensions;
 
@@ -31,10 +33,34 @@ namespace MemoryGame.Client.Service
 
         public void SetJoinParameters(string host, string port, string playerName)
         {
+            if (!HostIsValid(host))
+            {
+                throw new InvalidHostException();
+            }
+
+            if (!PortIsValid(port))
+            {
+                throw new InvalidPortException();
+            }
+
             PlayerName = playerName;
 
             _host = host;
             _port = port;
+        }
+
+        private static bool HostIsValid(string host)
+        {
+            var r = new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
+
+            return r.IsMatch(host);
+        }
+
+        private static bool PortIsValid(string port)
+        {
+            var r = new Regex(@"\d{4}");
+
+            return r.IsMatch(port);
         }
 
         public void Join()
