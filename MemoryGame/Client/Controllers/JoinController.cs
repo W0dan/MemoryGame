@@ -35,7 +35,7 @@ namespace MemoryGame.Client.Controllers
             {
                 _playerContext.SetJoinParameters(ipAddress, port, playerName);
 
-                _navigator.NavigateTo(() => _lobbyController.Index(false));
+                _navigator.NavigateTo(() => _lobbyController.Index(false), "Something went wrong when trying to join a game. Please check your parameters and try again");
             }
             catch (InvalidHostException ex)
             {

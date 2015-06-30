@@ -270,6 +270,9 @@
     <Resource Include="Client\Resources\Images\princess\009.png" />
     <Resource Include="Client\Resources\Images\princess\010.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\Resources\PlayerNames.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

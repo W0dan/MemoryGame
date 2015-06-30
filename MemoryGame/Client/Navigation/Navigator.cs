@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 using MemoryGame.Client.Extensions;
 using MemoryGame.Client.Views;
 
@@ -37,11 +35,11 @@ namespace MemoryGame.Client.Navigation
             _layoutGrid = layoutGrid;
         }
 
-        public void NavigateTo(Func<UIElement> action)
+        public void NavigateTo(Func<UIElement> action, string navigationErrorMessage = "An unknown error occured")
         {
             NavigationHistory.Push(action);
 
-            ActivateAction(action);
+            TryActivateAction(action, navigationErrorMessage);
         }
 
         public void NavigateFromHistory()
@@ -76,6 +74,26 @@ namespace MemoryGame.Client.Navigation
 
                 _activeControl = action();
                 _layoutGrid.CreateContentControl(_activeControl);
+            });
+        }
+
+        private void TryActivateAction(Func<UIElement> action, string navigationErrorMessage)
+        {
+            _layoutGrid.Dispatcher.Invoke(() =>
+            {
+                if (_activeControl != null)
+                    _layoutGrid.Children.Remove(_activeControl);
+
+                try
+                {
+                    _activeControl = action();
+                    _layoutGrid.CreateContentControl(_activeControl);
+                }
+                catch
+                {
+                    NavigateFromHistory();
+                    ShowMessage("An error occured", navigationErrorMessage);
+                }
             });
         }
     }

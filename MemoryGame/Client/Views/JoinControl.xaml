@@ -25,7 +25,7 @@
         <TextBlock Margin="10,10,10,10"  FontSize="20" FontWeight="Bold" Grid.ColumnSpan="3">Multiplayer:Join</TextBlock>
 
         <Label Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="1" FontSize="20" FontWeight="Bold">IP address</Label>
-        <TextBox Margin="10,10,10,10" Padding="10,10,10,10" Name="IPAddressTextbox" Grid.Column="2" Grid.Row="1" FontSize="20" FontWeight="Bold">0.0.0.0</TextBox>
+        <TextBox Margin="10,10,10,10" Padding="10,10,10,10" Name="IPAddressTextbox" Grid.Column="2" Grid.Row="1" FontSize="20" FontWeight="Bold">192.168.1.10</TextBox>
 
         <Label Margin="10,10,10,10" Padding="10,10,10,10" Grid.Column="1" Grid.Row="2" FontSize="20" FontWeight="Bold">Port</Label>
         <TextBox Margin="10,10,10,10" Padding="10,10,10,10" Name="PortTextbox" Grid.Column="2" Grid.Row="2" FontSize="20" FontWeight="Bold">8000</TextBox>

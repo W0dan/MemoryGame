@@ -60,20 +60,19 @@ namespace MemoryGame.Client.Controllers
 
         private void Defeat()
         {
-            ShowOutcome("Defeat.jpg");
+            ShowOutcome(ImageResources.Defeat);
         }
 
         private void Victory()
         {
-            ShowOutcome("victory-02.jpg");
+            ShowOutcome(ImageResources.Victory);
         }
 
-        private void ShowOutcome(string outcome)
+        private void ShowOutcome(ImageResources outcome)
         {
             _view.OutCome.Dispatcher.Invoke(() =>
             {
-                var imageName = ResourceHelper.ImageResourceRoot + outcome;
-                var imageSource = ResourceHelper.GetImage(imageName);
+                var imageSource = ResourceHelper.GetImage(outcome);
 
                 _view.OutCome.MouseUp += OutcomeClicked;
 
@@ -137,7 +136,7 @@ namespace MemoryGame.Client.Controllers
             var image = _cardsImages[cardName];
 
             //change the image to the resourceindex
-            var imageResource = ResourceHelper.GetImageRelative(card.ResourceSet, string.Format("{0:000}.png", resourceIndex));
+            var imageResource = ResourceHelper.GetImage(card.ResourceSet, resourceIndex);
             image.Source = imageResource;
         }
 
@@ -218,7 +217,7 @@ namespace MemoryGame.Client.Controllers
             {
                 for (var column = 0; column < columns; column++)
                 {
-                    var imageResource = ResourceHelper.GetImage("Client/Resources/Images/000.png");
+                    var imageResource = ResourceHelper.GetImage(ImageResources.CardBackside);
 
                     var cardName = string.Format(CardNameFormat, row, column);
                     var image = new Image

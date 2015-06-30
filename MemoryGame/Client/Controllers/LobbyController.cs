@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
@@ -54,20 +55,18 @@ namespace MemoryGame.Client.Controllers
 
         public UIElement Index(bool isHost)
         {
-            Debug.WriteLine(_playerContext.PlayerName + " is on thread " + Thread.CurrentThread.ManagedThreadId);
-
             if (_view != null)
             {
                 return _view;
             }
-
-            _view = new LobbyControl();
 
             _playerContext.ChatMessageReceived += AppendToChatbox;
             _playerContext.PlayerJoined += RefreshPlayerList;
             _playerContext.GameStarted += GameStarted;
 
             _playerContext.Join();
+
+            _view = new LobbyControl();
 
             if (isHost)
             {
@@ -84,8 +83,8 @@ namespace MemoryGame.Client.Controllers
 
             _view.TextEnteredInChatbox += TextEnteredInChatbox;
 
-            _view.CardsStackpanel.Children.Add(GetImage("cars", "001.png"));
-            _view.CardsStackpanel.Children.Add(GetImage("princess", "003.png"));
+            _view.CardsStackpanel.Children.Add(GetImage("cars", 1));
+            _view.CardsStackpanel.Children.Add(GetImage("princess", 3));
 
             SelectCardSet("cars");
 
@@ -109,9 +108,9 @@ namespace MemoryGame.Client.Controllers
             }
         }
 
-        private Border GetImage(string cardset, string imageName)
+        private Border GetImage(string cardset, int imageNr)
         {
-            var imageSource = Resources.ResourceHelper.GetImageRelative(cardset, imageName);
+            var imageSource = Resources.ResourceHelper.GetImage(cardset, imageNr);
             var image = new Image
             {
                 Name = cardset,

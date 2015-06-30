@@ -53,7 +53,12 @@ namespace MemoryGame.Client.Service
         {
             var r = new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
 
-            return r.IsMatch(host);
+            if (!r.IsMatch(host))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private static bool PortIsValid(string port)

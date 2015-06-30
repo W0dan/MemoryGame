@@ -4,23 +4,49 @@ using System.Windows.Media.Imaging;
 
 namespace MemoryGame.Client.Resources
 {
+    public enum ImageResources
+    {
+        Victory,
+        Defeat,
+        CardBackside
+    }
+
     public static class ResourceHelper
     {
-        public static string ImageResourceRoot { get { return "Client/Resources/Images/"; } }
+        private static string ImageResourceRoot { get { return "Client/Resources/Images/"; } }
 
-        public static ImageSource GetImage(string psResourceName)
+        public static ImageSource GetImage(ImageResources imageResource)
         {
-            return GetImage("MemoryGame", psResourceName);
+            string imageName;
+
+            switch (imageResource)
+            {
+                case ImageResources.Victory:
+                    imageName = ImageResourceRoot + "victory-02.jpg";
+                    break;
+                case ImageResources.Defeat:
+                    imageName = ImageResourceRoot + "Defeat.jpg";
+                    break;
+                case ImageResources.CardBackside:
+                    imageName = ImageResourceRoot + "000.png";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("imageResource", imageResource, null);
+            }
+
+            return GetImageResource(imageName);
         }
 
-        public static ImageSource GetImageRelative(string cardset, string psResourceName)
+        public static ImageSource GetImage(string cardset, int imageNr)
         {
-            return GetImage("MemoryGame", ImageResourceRoot + cardset + "/" + psResourceName);
+            var psResourceName = string.Format("{0:000}.png", imageNr);
+
+            return GetImageResource(ImageResourceRoot + cardset + "/" + psResourceName);
         }
 
-        public static ImageSource GetImage(string psAssemblyName, string psResourceName)
+        private static ImageSource GetImageResource(string psResourceName)
         {
-            var oUri = new Uri("pack://application:,,,/" + psAssemblyName + ";component/" + psResourceName, UriKind.RelativeOrAbsolute);
+            var oUri = new Uri("pack://application:,,,/MemoryGame;component/" + psResourceName, UriKind.RelativeOrAbsolute);
             return BitmapFrame.Create(oUri);
         }
     }

@@ -7,7 +7,7 @@ namespace MemoryGame.Client.Navigation
     public interface INavigator
     {
         void Initialize(Grid layoutGrid);
-        void NavigateTo(Func<UIElement> action);
+        void NavigateTo(Func<UIElement> action, string navigationErrorMessage = "");
         void NavigateFromHistory();
         void ShowMessage(string title, string message);
     }
