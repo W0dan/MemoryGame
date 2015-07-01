@@ -28,5 +28,6 @@ namespace MemoryGame.Client.Service
         void ReadyToRumble();
         void StartGame(string cardSet, int numberOfCardsLevel);
         void CardClicked(int row, int column);
+        void Leave();
     }
 }

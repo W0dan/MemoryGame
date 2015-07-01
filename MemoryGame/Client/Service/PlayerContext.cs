@@ -70,6 +70,11 @@ namespace MemoryGame.Client.Service
 
         public void Join()
         {
+            if (!string.IsNullOrWhiteSpace(_playerToken))
+            {
+                return;
+            }
+
             _service = new MultiplayerProxy(_host, _port);
 
             _service.ChatMessageReceived += ChatMessageReceived;
@@ -88,6 +93,11 @@ namespace MemoryGame.Client.Service
             //todo: display error when join fails with exception
             //todo: display error when join returns null token (meaning playerName allready exists on the server)
             _playerToken = _service.Join(PlayerName);
+        }
+
+        public void Leave()
+        {
+            _playerToken = null;
         }
 
         private void GameEnded(string victoriousPlayer)

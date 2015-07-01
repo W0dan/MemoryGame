@@ -89,7 +89,7 @@ namespace MemoryGame.Client.Navigation
                     _activeControl = action();
                     _layoutGrid.CreateContentControl(_activeControl);
                 }
-                catch
+                catch (Exception ex)
                 {
                     NavigateFromHistory();
                     ShowMessage("An error occured", navigationErrorMessage);

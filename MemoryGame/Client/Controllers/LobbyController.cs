@@ -60,13 +60,24 @@ namespace MemoryGame.Client.Controllers
                 return _view;
             }
 
-            _playerContext.ChatMessageReceived += AppendToChatbox;
-            _playerContext.PlayerJoined += RefreshPlayerList;
-            _playerContext.GameStarted += GameStarted;
+            try
+            {
+                _view = new LobbyControl();
 
-            _playerContext.Join();
+                _playerContext.ChatMessageReceived += AppendToChatbox;
+                _playerContext.PlayerJoined += RefreshPlayerList;
+                _playerContext.GameStarted += GameStarted;
 
-            _view = new LobbyControl();
+                _playerContext.Join();
+            }
+            catch (Exception)
+            {
+                _playerContext.ChatMessageReceived -= AppendToChatbox;
+                _playerContext.PlayerJoined -= RefreshPlayerList;
+                _playerContext.GameStarted -= GameStarted;
+
+                throw;
+            }
 
             if (isHost)
             {
@@ -87,6 +98,8 @@ namespace MemoryGame.Client.Controllers
             _view.CardsStackpanel.Children.Add(GetImage("princess", 3));
 
             SelectCardSet("cars");
+
+            RefreshPlayerList(null);
 
             return _view;
         }
@@ -126,7 +139,7 @@ namespace MemoryGame.Client.Controllers
                 Child = image
             };
 
-            _cardSetImages.Add(cardset, border);
+            _cardSetImages[cardset] = border;
 
             return border;
         }
@@ -150,20 +163,36 @@ namespace MemoryGame.Client.Controllers
             //todo: and also to stop accepting chat messages
 
             _playerContext.StartGame(_selectedCardSet, numberOfCardsLevel);
+
+            Cleanup();
         }
 
         private void LeaveGame()
         {
             //todo: send Leave() message to server
+
+            _playerContext.Leave();
+
             _navigator.NavigateFromHistory();
         }
 
         private void CancelHosting()
         {
+            Cleanup();
+
             //todo: notify all players that the host is about to stop
             _host.Stop();
 
             _navigator.NavigateFromHistory();
+        }
+
+        private void Cleanup()
+        {
+            _playerContext.ChatMessageReceived -= AppendToChatbox;
+            _playerContext.PlayerJoined -= RefreshPlayerList;
+            _playerContext.GameStarted -= GameStarted;
+
+            _view = null;
         }
 
         private void TextEnteredInChatbox(string text)

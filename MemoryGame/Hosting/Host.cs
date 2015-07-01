@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace MemoryGame.Hosting
     public class Host : IHost
     {
         private bool _isAskedToStop;
+        private bool _isStopped;
 
         public void Start(string player, int port)
         {
             _isAskedToStop = false;
+            _isStopped = false;
 
             Task.Factory.StartNew(() =>
             {
@@ -30,13 +33,27 @@ namespace MemoryGame.Hosting
                     Thread.Sleep(100);
                 }
 
-                serviceHost.Close();
+                try
+                {
+                    serviceHost.Close();
+
+                    _isStopped = true;
+                }
+                catch
+                {
+                    _isStopped = true;
+                }
             });
         }
 
         public void Stop()
         {
             _isAskedToStop = true;
+
+            while (!_isStopped)
+            {
+                Thread.Sleep(100);
+            }
         }
     }
 }

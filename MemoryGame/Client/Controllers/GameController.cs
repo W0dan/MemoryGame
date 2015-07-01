@@ -97,6 +97,8 @@ namespace MemoryGame.Client.Controllers
 
         private void LoadPlayers()
         {
+            _playersLabels.Clear();
+
             var players = _playerContext.GetPlayerList();
             foreach (var player in players)
             {
@@ -213,6 +215,8 @@ namespace MemoryGame.Client.Controllers
 
         private void DrawCardsBacksides(int rows, int columns, Panel cardsGrid)
         {
+            _cardsImages.Clear();
+
             for (var row = 0; row < rows; row++)
             {
                 for (var column = 0; column < columns; column++)
@@ -230,7 +234,7 @@ namespace MemoryGame.Client.Controllers
 
                     image.MouseUp += CardClicked;
 
-                    _cardsImages.Add(cardName, image);
+                    _cardsImages[cardName] = image;
 
                     cardsGrid.Children.Add(image);
                     Grid.SetRow(image, row);
