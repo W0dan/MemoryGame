@@ -92,7 +92,7 @@ namespace MemoryGame.Client.Navigation
                 catch (Exception ex)
                 {
                     NavigateFromHistory();
-                    ShowMessage("An error occured", navigationErrorMessage);
+                    ShowMessage("An error occured", navigationErrorMessage ?? ex.ToString());
                 }
             });
         }
